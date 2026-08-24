@@ -1,0 +1,338 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum RecipeType {
+  FREE
+  PREMIUM
+}
+
+enum RecipeStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum GalleryCategory {
+  FOOD
+  CHEF
+  EVENTS
+  ACHIEVEMENTS
+  BEHIND_SCENES
+}
+
+enum AchievementType {
+  AWARD
+  CERTIFICATION
+  COMPETITION
+  RECOGNITION
+  MEDIA_FEATURE
+  TRAINING
+}
+
+enum TestimonialStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(CUSTOMER)
+  image        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders        Order[]
+  recipeAccess  RecipeAccess[]
+  passwordResets PasswordReset[]
+
+  @@map("users")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_resets")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  recipes Recipe[]
+
+  @@map("categories")
+}
+
+model Recipe {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  description String
+  coverImage  String?
+  cuisine     String
+  categoryId  String?
+  difficulty  Difficulty   @default(MEDIUM)
+  prepTime    Int          // in minutes
+  cookingTime Int          // in minutes
+  servings    Int          @default(4)
+  type        RecipeType   @default(FREE)
+  price       Float        @default(0)
+  currency    String       @default("PKR")
+  status      RecipeStatus @default(DRAFT)
+  featured    Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  category     Category?         @relation(fields: [categoryId], references: [id])
+  ingredients  RecipeIngredient[]
+  steps        RecipeStep[]
+  notes        RecipeNote[]
+  tips         RecipeTip[]
+  equipment    RecipeEquipment[]
+  orderItems   OrderItem[]
+  access       RecipeAccess[]
+
+  @@map("recipes")
+}
+
+model RecipeIngredient {
+  id         String @id @default(cuid())
+  recipeId   String
+  ingredient String
+  quantity   String
+  unit       String?
+  sortOrder  Int    @default(0)
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_ingredients")
+}
+
+model RecipeStep {
+  id          String @id @default(cuid())
+  recipeId    String
+  stepNumber  Int
+  instruction String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_steps")
+}
+
+model RecipeNote {
+  id       String @id @default(cuid())
+  recipeId String
+  content  String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_notes")
+}
+
+model RecipeTip {
+  id       String @id @default(cuid())
+  recipeId String
+  content  String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_tips")
+}
+
+model RecipeEquipment {
+  id       String @id @default(cuid())
+  recipeId String
+  name     String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_equipment")
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  userId        String
+  totalAmount   Float
+  currency      String        @default("PKR")
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id])
+  items        OrderItem[]
+  payment      Payment?
+  recipeAccess RecipeAccess[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id       String @id @default(cuid())
+  orderId  String
+  recipeId String
+  price    Float
+
+  order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id])
+
+  @@map("order_items")
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  orderId     String        @unique
+  provider    String        @default("manual")
+  providerRef String?
+  amount      Float
+  currency    String        @default("PKR")
+  status      PaymentStatus @default(PENDING)
+  metadata    Json?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+model RecipeAccess {
+  id         String   @id @default(cuid())
+  userId     String
+  recipeId   String
+  orderId    String?
+  grantedAt  DateTime @default(now())
+  revokedAt  DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  recipe Recipe @relation(fields: [recipeId], references: [id])
+  order  Order? @relation(fields: [orderId], references: [id])
+
+  @@unique([userId, recipeId])
+  @@map("recipe_access")
+}
+
+model Gallery {
+  id          String          @id @default(cuid())
+  title       String
+  image       String
+  category    GalleryCategory @default(FOOD)
+  description String?
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+
+  @@map("gallery")
+}
+
+model Achievement {
+  id           String          @id @default(cuid())
+  title        String
+  organization String?
+  date         DateTime?
+  description  String?
+  image        String?
+  type         AchievementType @default(AWARD)
+  sortOrder    Int             @default(0)
+  createdAt    DateTime        @default(now())
+
+  @@map("achievements")
+}
+
+model Testimonial {
+  id           String            @id @default(cuid())
+  customerName String
+  image        String?
+  rating       Int               @default(5)
+  content      String
+  status       TestimonialStatus @default(DRAFT)
+  createdAt    DateTime          @default(now())
+
+  @@map("testimonials")
+}
+
+model SiteSettings {
+  id              String   @id @default("singleton")
+  chefName        String   @default("Chef Irfan Malik")
+  tagline         String   @default("Crafting Flavors. Sharing Knowledge.")
+  biography       String?
+  profileImage    String?
+  heroImage       String?
+  currency        String   @default("PKR")
+  email           String?
+  phone           String?
+  address         String?
+  facebook        String?
+  instagram       String?
+  youtube         String?
+  twitter         String?
+  whatsapp        String?
+  seoTitle        String?
+  seoDescription  String?
+  logoUrl         String?
+  updatedAt       DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
