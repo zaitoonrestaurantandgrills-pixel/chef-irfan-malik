@@ -165,12 +165,6 @@ export default async function DashboardPage() {
         </div>
       </main>
       <Footer />
-
-      <style>{`
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: 1fr 340px"] { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </>
   );
 }

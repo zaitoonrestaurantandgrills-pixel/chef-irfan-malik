@@ -3,11 +3,11 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { ChefHat, Award, BookOpen, Flame, Heart, Trophy, CheckCircle, ArrowRight } from 'lucide-react';
+import { Award, BookOpen, Flame, Heart, Trophy, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Chef Irfan Malik — Biography & Culinary Journey',
-  description: 'Learn about Chef Irfan Malik, his culinary philosophy, professional background, expertise in Pakistani gastronomy, and dedication to sharing recipes.',
+  description: 'Learn about Executive Chef Irfan Malik, his culinary philosophy, food safety honors, Pakistani gastronomy heritage, and dedication to recipe sharing.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -21,93 +21,149 @@ export default async function AboutPage() {
 
   const chefName = settings?.chefName || 'Chef Irfan Malik';
   const tagline = settings?.tagline || 'Crafting Flavors. Sharing Knowledge.';
-  const bio = settings?.biography || 'Chef Irfan Malik is a passionate culinary artist with an obsession for perfection in traditional and contemporary Pakistani gastronomy.';
+  const bio = settings?.biography || 'Executive Chef Irfan Malik is a celebrated culinary master at Zaitoon Restaurant and an esteemed figure in Pakistani gastronomy. Honored by the Consumers Association of Pakistan and Sindh Food Authority, Chef Irfan is dedicated to Michelin-standard food safety, heritage recipes, and culinary education.';
+  const profileImage = settings?.profileImage || '/uploads/gallery/chef-irfan-malik-award-presentation-vip.jpg';
 
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh' }}>
-        {/* Header Hero */}
-        <section style={{
-          padding: '5rem 0 4rem',
-          background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%)',
-          borderBottom: '1px solid var(--color-border)',
-        }}>
+
+      <main style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+        {/* Header Hero Section */}
+        <section
+          style={{
+            padding: '4rem 0 3.5rem',
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid var(--color-border)',
+          }}
+        >
           <div className="container">
-            <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: '4rem', alignItems: 'center' }}>
-              {/* Image / Silhouette */}
-              <div style={{
-                aspectRatio: '4/5',
-                borderRadius: 'var(--radius-xl)',
-                background: 'linear-gradient(135deg, var(--color-surface-2) 0%, var(--color-surface-3) 100%)',
-                border: '2px solid var(--color-border-gold)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                position: 'relative', overflow: 'hidden',
-                boxShadow: 'var(--shadow-card)',
-              }}>
-                {settings?.profileImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={settings.profileImage} alt={chefName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div style={{ textAlign: 'center', padding: '2rem' }}>
-                    <div style={{
-                      width: '120px', height: '120px', borderRadius: '50%',
-                      background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-primary))',
-                      margin: '0 auto 1.5rem',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '3rem',
-                    }}>
-                      👨‍🍳
-                    </div>
-                    <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700 }}>{chefName}</div>
-                    <div style={{ color: 'var(--color-primary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, marginTop: '0.25rem' }}>
-                      Professional Chef
-                    </div>
-                  </div>
-                )}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '4rem',
+                alignItems: 'center',
+              }}
+            >
+              {/* Chef Photo Frame */}
+              <div style={{ maxWidth: '440px', width: '100%', margin: '0 auto' }}>
+                <div
+                  style={{
+                    aspectRatio: '4/3',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid var(--color-border)',
+                    overflow: 'hidden',
+                    boxShadow: 'var(--shadow-ambient)',
+                    padding: '0.75rem',
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={profileImage}
+                    alt={chefName}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: 'var(--radius-sm)',
+                    }}
+                  />
+                </div>
               </div>
 
-              {/* Bio & Intro */}
+              {/* Bio & Intro Copy */}
               <div>
-                <span className="section-label">Culinary Story</span>
-                <h1 className="heading-xl" style={{ marginBottom: '1rem' }}>
-                  Meet <span className="gradient-text">{chefName}</span>
+                <span
+                  className="font-label-caps"
+                  style={{
+                    color: 'var(--color-secondary)',
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    letterSpacing: '0.15em',
+                  }}
+                >
+                  Culinary Heritage & Story
+                </span>
+
+                <h1
+                  className="font-display-lg-mobile md:font-display-lg"
+                  style={{
+                    color: 'var(--color-primary)',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  Meet {chefName}
                 </h1>
-                <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: 'var(--color-primary)', fontStyle: 'italic', marginBottom: '1.5rem' }}>
+
+                <p
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '1.2rem',
+                    color: 'var(--color-secondary)',
+                    fontStyle: 'italic',
+                    marginBottom: '1.5rem',
+                  }}
+                >
                   &ldquo;{tagline}&rdquo;
                 </p>
 
-                <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', lineHeight: 1.85, marginBottom: '2rem' }}>
+                <p
+                  className="font-body-lg"
+                  style={{
+                    color: 'var(--color-text-muted)',
+                    lineHeight: 1.8,
+                    marginBottom: '2rem',
+                  }}
+                >
                   {bio}
                 </p>
 
-                <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', marginBottom: '2.5rem', padding: '1.5rem', background: 'var(--color-surface-2)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                {/* Stat Counters */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '1.5rem',
+                    padding: '1.5rem 0',
+                    borderTop: '1px solid var(--color-border)',
+                    borderBottom: '1px solid var(--color-border)',
+                    marginBottom: '2rem',
+                  }}
+                >
                   <div>
-                    <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-primary)' }}>
+                    <div className="font-display-lg-mobile" style={{ color: 'var(--color-primary)' }}>
                       100%
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Authentic Recipes</div>
-                  </div>
-                  <div style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}>
-                    <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-primary)' }}>
-                      {recipesCount}+
+                    <div className="font-label-caps" style={{ color: 'var(--color-text-muted)' }}>
+                      Authentic Recipes
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Recipes Published</div>
                   </div>
-                  <div style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}>
-                    <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-primary)' }}>
-                      {achievements.length}+
+                  <div>
+                    <div className="font-display-lg-mobile" style={{ color: 'var(--color-primary)' }}>
+                      {recipesCount > 0 ? `${recipesCount}+` : '100+'}
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Honors & Awards</div>
+                    <div className="font-label-caps" style={{ color: 'var(--color-text-muted)' }}>
+                      Recipes Published
+                    </div>
+                  </div>
+                  <div>
+                    <div className="font-display-lg-mobile" style={{ color: 'var(--color-primary)' }}>
+                      {achievements.length > 0 ? `${achievements.length}+` : '5+'}
+                    </div>
+                    <div className="font-label-caps" style={{ color: 'var(--color-text-muted)' }}>
+                      Honors & Awards
+                    </div>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <Link href="/recipes" className="btn btn-primary">
+                  <Link href="/recipes" className="btn btn-primary btn-lg">
                     <BookOpen size={16} /> Explore Recipes
                   </Link>
-                  <Link href="/contact" className="btn btn-secondary">
-                    Get in Touch
+                  <Link href="/gallery" className="btn btn-secondary btn-lg">
+                    View Gallery & Honors
                   </Link>
                 </div>
               </div>
@@ -115,100 +171,95 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* Culinary Philosophy */}
-        <section className="section" style={{ background: 'var(--color-surface)' }}>
+        {/* Core Values / Philosophy */}
+        <section style={{ padding: '5rem 0' }}>
           <div className="container">
-            <div className="section-header">
-              <span className="section-label">Core Values</span>
-              <h2 className="heading-xl">Culinary Philosophy</h2>
-              <div className="divider-gold" />
+            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+              <span className="font-label-caps" style={{ color: 'var(--color-secondary)' }}>Core Values</span>
+              <h2 className="font-headline-lg" style={{ color: 'var(--color-primary)', marginTop: '0.25rem' }}>
+                Culinary Philosophy
+              </h2>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
               {[
                 {
-                  icon: <Flame size={28} />,
+                  icon: <Flame size={24} />,
                   title: 'Respect for Heritage & Technique',
-                  desc: 'Every traditional dish carries centuries of regional culinary history. We honor authentic spice balances, slow cooking (dum), and time-honored methods.',
+                  desc: 'Every traditional dish carries regional culinary heritage. We honor authentic slow-cooking (dum), charcoal smoking, and balanced spice roasting.',
                 },
                 {
-                  icon: <Award size={28} />,
-                  title: 'Precision & Consistency',
-                  desc: 'A recipe must work flawlessly in your home kitchen. Every measurement, timing, and heat intensity is thoroughly tested and documented.',
+                  icon: <ShieldCheck size={24} />,
+                  title: 'Food Safety & Kitchen Quality',
+                  desc: 'Recognized by the Consumers Association of Pakistan and Sindh Food Authority for maintaining top culinary hygiene and health standards.',
                 },
                 {
-                  icon: <Heart size={28} />,
-                  title: 'Sharing Knowledge Freely',
-                  desc: 'Culinary mastery is not meant to be kept secret. Through detailed recipes and masterclasses, we empower everyone to cook like a master chef.',
+                  icon: <Heart size={24} />,
+                  title: 'Sharing Mastery Freely',
+                  desc: 'Culinary excellence should empower everyone. Through detailed recipes and masterclasses, we enable home cooks and chefs to cook with confidence.',
                 },
               ].map(({ icon, title, desc }) => (
-                <div key={title} className="card-glass" style={{ padding: '2rem' }}>
-                  <div style={{
-                    width: '52px', height: '52px', borderRadius: 'var(--radius-md)',
-                    background: 'var(--color-primary-muted)', border: '1px solid var(--color-border-gold)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--color-primary)', marginBottom: '1.25rem',
-                  }}>
+                <div
+                  key={title}
+                  style={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '2rem',
+                    boxShadow: 'var(--shadow-ambient)',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: 'var(--radius-sm)',
+                      backgroundColor: 'var(--color-secondary-container)',
+                      color: 'var(--color-on-secondary-container)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1.25rem',
+                    }}
+                  >
                     {icon}
                   </div>
-                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', marginBottom: '0.75rem' }}>{title}</h3>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.925rem', lineHeight: 1.75 }}>{desc}</p>
+                  <h3 className="font-headline-sm" style={{ color: 'var(--color-primary)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+                    {title}
+                  </h3>
+                  <p className="font-body-md" style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, margin: 0 }}>
+                    {desc}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Professional Timeline / Specialties */}
-        <section className="section" style={{ background: 'var(--color-bg)' }}>
-          <div className="container">
-            <div className="section-header">
-              <span className="section-label">Culinary Focus</span>
-              <h2 className="heading-xl">Specialties & Signature Styles</h2>
-              <div className="divider-gold" />
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-              {[
-                { name: 'Traditional Biryani & Pulao', desc: 'Aromatic layered rice masterclasses using slow dum and fragrant saffron.' },
-                { name: 'Karahi & Handi Dishes', desc: 'High-heat wok cooking with fresh tomatoes, ginger, and balanced spices.' },
-                { name: 'Slow-Cooked Nihari & Haleem', desc: 'Rich, unctuous gravies perfected through hours of simmering.' },
-                { name: 'Contemporary Desserts', desc: 'Festive sweets from classic Sheer Khurma to gourmet fusion creations.' },
-              ].map(({ name, desc }) => (
-                <div key={name} className="card" style={{ padding: '1.75rem' }}>
-                  <div style={{ color: 'var(--color-primary)', fontSize: '1.5rem', marginBottom: '0.75rem' }}>✨</div>
-                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', marginBottom: '0.5rem' }}>{name}</h3>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', lineHeight: 1.65 }}>{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section style={{ padding: '4rem 0', background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', textAlign: 'center' }}>
-          <div className="container">
-            <h2 className="heading-lg" style={{ marginBottom: '1rem' }}>
+        {/* CTA Banner */}
+        <section
+          style={{
+            padding: '5rem 0',
+            backgroundColor: 'var(--color-primary)',
+            color: '#ffffff',
+            textAlign: 'center',
+          }}
+        >
+          <div className="container" style={{ maxWidth: '640px' }}>
+            <h2 className="font-headline-lg" style={{ color: '#ffffff', marginBottom: '1rem' }}>
               Start Cooking with Chef Irfan
             </h2>
-            <p style={{ color: 'var(--color-text-muted)', maxWidth: '480px', margin: '0 auto 2rem' }}>
-              Explore our curated library of free and premium recipes today.
+            <p className="font-body-lg" style={{ color: 'rgba(255,255,255,0.7)', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
+              Explore our curated digital cookbook of free and premium culinary masterclasses today.
             </p>
-            <Link href="/recipes" className="btn btn-primary btn-lg">
+            <Link href="/recipes" className="btn btn-lg" style={{ background: 'var(--color-secondary)', color: '#ffffff', border: 'none' }}>
               Browse All Recipes <ArrowRight size={16} />
             </Link>
           </div>
         </section>
       </main>
-      <Footer />
 
-      <style>{`
-        @media (max-width: 860px) {
-          section > div > div[style*="grid-template-columns: 420px 1fr"] {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+      <Footer />
     </>
   );
 }

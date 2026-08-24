@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
-import { Search, Filter, X } from 'lucide-react';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
 import type { Category } from '@prisma/client';
 
 interface Props {
@@ -16,8 +16,14 @@ interface Props {
   };
 }
 
-const difficulties = ['EASY', 'MEDIUM', 'HARD', 'EXPERT'];
-const cuisines = ['Pakistani', 'Indian', 'Continental', 'Chinese', 'Arabic', 'Italian'];
+const defaultCuisines = [
+  'Pakistani',
+  'Chinese',
+  'BBQ',
+  'Fast Food',
+  'Continental',
+  'Desserts',
+];
 
 export default function RecipeFilters({ categories, currentParams }: Props) {
   const router = useRouter();
@@ -41,123 +47,180 @@ export default function RecipeFilters({ categories, currentParams }: Props) {
     router.push(buildUrl({ search: search || undefined }));
   };
 
-  const isActive = (key: string, value: string) =>
-    (currentParams as Record<string, string | undefined>)[key] === value;
+  const selectedCuisine = currentParams.cuisine || '';
+  const selectedType = currentParams.type || '';
 
   return (
-    <div style={{
-      background: 'var(--color-surface)', border: '1px solid var(--color-border)',
-      borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '0.5rem',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '1.25rem' }}>
-        <Filter size={16} style={{ color: 'var(--color-primary)' }} />
-        <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Filter Recipes</span>
-        {Object.values(currentParams).some(Boolean) && (
-          <a href="/recipes" style={{
-            marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.3rem',
-            fontSize: '0.8rem', color: 'var(--color-text-muted)', textDecoration: 'none',
-          }} className="hover-gold">
-            <X size={12} /> Clear all
-          </a>
-        )}
-      </div>
-
-      <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-        {/* Search */}
-        <form onSubmit={handleSearch} style={{ flex: '1', minWidth: '200px' }}>
-          <label className="form-label">Search</label>
-          <div style={{ position: 'relative', marginTop: '0.25rem' }}>
-            <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-subtle)' }} />
-            <input
-              className="form-input"
-              style={{ paddingLeft: '2.25rem', paddingRight: '0.75rem' }}
-              placeholder="Search recipes..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
+    <div style={{ marginBottom: '2.5rem' }}>
+      {/* Search Bar & Primary Filter Row */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5rem',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '1.5rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Search Input */}
+          <form
+            onSubmit={handleSearch}
+            style={{
+              position: 'relative',
+              flex: '1',
+              minWidth: '280px',
+              maxWidth: '420px',
+            }}
+          >
+            <Search
+              size={18}
+              style={{
+                position: 'absolute',
+                left: '0.5rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--color-text-subtle)',
+              }}
             />
-          </div>
-        </form>
+            <input
+              type="text"
+              placeholder="Search ingredients, dishes, cuisines..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="font-body-md"
+              style={{
+                width: '100%',
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderBottom: '1px solid var(--color-border)',
+                padding: '0.75rem 1rem 0.75rem 2.25rem',
+                color: 'var(--color-primary)',
+                outline: 'none',
+                transition: 'border-color 0.2s ease',
+              }}
+              onFocus={(e) => (e.currentTarget.style.borderBottomColor = 'var(--color-secondary)')}
+              onBlur={(e) => (e.currentTarget.style.borderBottomColor = 'var(--color-border)')}
+            />
+          </form>
 
-        {/* Type */}
-        <div style={{ minWidth: '150px' }}>
-          <label className="form-label">Type</label>
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.375rem' }}>
-            {[
-              { value: '', label: 'All' },
-              { value: 'free', label: '✓ Free' },
-              { value: 'premium', label: '⭐ Premium' },
-            ].map(({ value, label }) => (
-              <a
-                key={value}
-                href={buildUrl({ type: value || undefined })}
+          {/* Clear Filters (if active) */}
+          {Object.values(currentParams).some(Boolean) && (
+            <a
+              href="/recipes"
+              className="font-label-caps"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                color: 'var(--color-secondary)',
+                textDecoration: 'none',
+                fontSize: '11px',
+              }}
+            >
+              <X size={13} /> Clear filters
+            </a>
+          )}
+        </div>
+
+        {/* Horizontal Category & Status Pills */}
+        <div
+          className="hide-scrollbar"
+          style={{
+            overflowX: 'auto',
+            paddingBottom: '0.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          {/* ALL Pill */}
+          <button
+            onClick={() => router.push(buildUrl({ cuisine: undefined, type: undefined, category: undefined }))}
+            className="font-label-caps"
+            style={{
+              padding: '0.5rem 1.25rem',
+              borderRadius: '999px',
+              border: !selectedCuisine && !selectedType ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+              background: !selectedCuisine && !selectedType ? 'var(--color-primary)' : 'transparent',
+              color: !selectedCuisine && !selectedType ? '#ffffff' : 'var(--color-text)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            All
+          </button>
+
+          {/* Dynamic / Common Cuisines */}
+          {defaultCuisines.map((c) => {
+            const isActive = selectedCuisine.toLowerCase() === c.toLowerCase();
+            return (
+              <button
+                key={c}
+                onClick={() =>
+                  router.push(buildUrl({ cuisine: isActive ? undefined : c }))
+                }
+                className="font-label-caps"
                 style={{
-                  padding: '0.4rem 0.75rem',
+                  padding: '0.5rem 1.25rem',
                   borderRadius: '999px',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                  background: (currentParams.type === value || (!currentParams.type && !value))
-                    ? 'var(--color-primary)' : 'var(--color-surface-2)',
-                  color: (currentParams.type === value || (!currentParams.type && !value))
-                    ? '#0A0A0A' : 'var(--color-text-muted)',
-                  border: '1px solid',
-                  borderColor: (currentParams.type === value || (!currentParams.type && !value))
-                    ? 'var(--color-primary)' : 'var(--color-border)',
+                  border: isActive ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+                  background: isActive ? 'var(--color-primary)' : 'transparent',
+                  color: isActive ? '#ffffff' : 'var(--color-text)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s ease',
                 }}
               >
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
+                {c}
+              </button>
+            );
+          })}
 
-        {/* Category */}
-        <div style={{ minWidth: '160px' }}>
-          <label className="form-label">Category</label>
-          <select
-            className="form-input"
-            style={{ marginTop: '0.375rem' }}
-            value={currentParams.category || ''}
-            onChange={e => router.push(buildUrl({ category: e.target.value || undefined }))}
-          >
-            <option value="">All Categories</option>
-            {categories.map(c => (
-              <option key={c.id} value={c.slug}>{c.name}</option>
-            ))}
-          </select>
-        </div>
+          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--color-border)', margin: '0 0.5rem', flexShrink: 0 }} />
 
-        {/* Difficulty */}
-        <div style={{ minWidth: '160px' }}>
-          <label className="form-label">Difficulty</label>
-          <select
-            className="form-input"
-            style={{ marginTop: '0.375rem' }}
-            value={currentParams.difficulty || ''}
-            onChange={e => router.push(buildUrl({ difficulty: e.target.value || undefined }))}
+          {/* Premium Pill */}
+          <button
+            onClick={() => router.push(buildUrl({ type: selectedType === 'premium' ? undefined : 'premium' }))}
+            className="font-label-caps"
+            style={{
+              padding: '0.5rem 1.25rem',
+              borderRadius: '999px',
+              border: selectedType === 'premium' ? '1px solid var(--color-tertiary-fixed-dim)' : '1px solid var(--color-border)',
+              background: selectedType === 'premium' ? 'var(--color-tertiary-container)' : 'transparent',
+              color: selectedType === 'premium' ? 'var(--color-tertiary-fixed-dim)' : 'var(--color-text)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s ease',
+            }}
           >
-            <option value="">All Levels</option>
-            {difficulties.map(d => (
-              <option key={d} value={d}>{d.charAt(0) + d.slice(1).toLowerCase()}</option>
-            ))}
-          </select>
-        </div>
+            ★ Premium
+          </button>
 
-        {/* Cuisine */}
-        <div style={{ minWidth: '160px' }}>
-          <label className="form-label">Cuisine</label>
-          <select
-            className="form-input"
-            style={{ marginTop: '0.375rem' }}
-            value={currentParams.cuisine || ''}
-            onChange={e => router.push(buildUrl({ cuisine: e.target.value || undefined }))}
+          {/* Free Pill */}
+          <button
+            onClick={() => router.push(buildUrl({ type: selectedType === 'free' ? undefined : 'free' }))}
+            className="font-label-caps"
+            style={{
+              padding: '0.5rem 1.25rem',
+              borderRadius: '999px',
+              border: selectedType === 'free' ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+              background: selectedType === 'free' ? 'var(--color-surface-container)' : 'transparent',
+              color: selectedType === 'free' ? 'var(--color-primary)' : 'var(--color-text)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s ease',
+            }}
           >
-            <option value="">All Cuisines</option>
-            {cuisines.map(c => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+            Free
+          </button>
         </div>
       </div>
     </div>

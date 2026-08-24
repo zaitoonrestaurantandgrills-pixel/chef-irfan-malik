@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Recipe Marketplace - Chef Irfan Malik</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dbdad6",
+                        "on-primary": "#ffffff",
+                        "primary": "#000000",
+                        "outline-variant": "#c4c7c7",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary": "#000000",
+                        "inverse-on-surface": "#f2f1ed",
+                        "tertiary-fixed-dim": "#e9c176",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#944925",
+                        "inverse-surface": "#2f312e",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb596",
+                        "background": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#773310",
+                        "outline": "#747878",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary-fixed": "#360f00",
+                        "tertiary-fixed": "#ffdea5",
+                        "on-primary-container": "#858383",
+                        "on-surface-variant": "#444748",
+                        "surface": "#faf9f5",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e9e8e4",
+                        "surface-container": "#efeeea",
+                        "tertiary-container": "#261900",
+                        "primary-container": "#1c1b1b",
+                        "secondary-fixed": "#ffdbcd",
+                        "on-tertiary-fixed": "#261900",
+                        "on-primary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#76320f",
+                        "secondary-container": "#fe9e72",
+                        "primary-fixed": "#e5e2e1",
+                        "on-background": "#1b1c1a",
+                        "on-tertiary-container": "#a17f3b",
+                        "on-tertiary-fixed-variant": "#5d4201",
+                        "surface-container-low": "#f4f4f0",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "surface-tint": "#5f5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base-unit": "8px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col md:flex-row">
+    <!-- Side Navigation Shell (Hidden on Mobile, Flex on Desktop) -->
+    <nav class="hidden md:flex flex-col h-full border-r border-outline-variant bg-surface w-64 fixed left-0 top-0 z-40">
+        <div class="p-6 border-b border-outline-variant">
+            <h1 class="font-headline-sm text-headline-sm text-primary">CHEF IRFAN MALIK</h1>
+        </div>
+        <div class="p-6">
+            <div class="flex items-center gap-4 mb-2">
+                <img class="w-12 h-12 rounded-full object-cover" data-alt="Chef Irfan portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxeTNu4grcLaCEiz32e--dJo6kdJSa-piapo0gId6JreZKHU9TgHak0WN4WvCpOaoSGzU5iP8u3I5ze6ShsHFa1nFEOLO6HMPDRwOEL9WHSh3R7zgo0VhFQFjyhPPzuXYNty9U8HgHpfWwmnmOWXF1Pf1ibv4jw8l4XHyIzTMKrEPEwZTWlzfdZHSg861NPFDLLP8-7pqEY2NzpLAzUWNnMXJvYMpw_7irswov4arTE4avJDjL98hi"/>
+                <div>
+                    <h2 class="font-headline-sm text-[16px] text-primary">Irfan Malik</h2>
+                    <p class="font-body-md text-body-md text-secondary text-sm">Premium Access</p>
+                </div>
+            </div>
+            <button class="w-full mt-4 bg-primary text-on-primary py-2 px-4 rounded font-label-caps text-label-caps hover:opacity-90 transition-opacity">Book Private Event</button>
+        </div>
+        <ul class="flex-1 overflow-y-auto hide-scrollbar py-4">
+            <li>
+                <a class="flex items-center gap-4 px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+                    <span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-4 px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+                    <span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="menu_book">menu_book</span>
+                    My Recipes
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-4 px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+                    <span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="receipt_long">receipt_long</span>
+                    Order History
+                </a>
+            </li>
+            <li class="relative">
+                <a class="flex items-center gap-4 px-6 py-3 font-label-caps text-label-caps text-on-secondary-container bg-secondary-container border-l-4 border-secondary group" href="#">
+                    <span class="material-symbols-outlined text-[20px] text-on-secondary-container" data-icon="storefront" data-weight="fill" style="font-variation-settings: 'FILL' 1;">storefront</span>
+                    Marketplace
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-4 px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+                    <span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="settings">settings</span>
+                    Settings
+                </a>
+            </li>
+        </ul>
+        <div class="border-t border-outline-variant p-4">
+            <ul class="space-y-2">
+                <li>
+                    <a class="flex items-center gap-4 px-4 py-2 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group rounded" href="#">
+                        <span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors" data-icon="help_outline">help_outline</span>
+                        Support
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center gap-4 px-4 py-2 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-variant transition-colors group rounded" href="#">
+                        <span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors" data-icon="logout">logout</span>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Top Navigation Shell (Visible on Mobile, Hidden on Desktop) -->
+    <header class="md:hidden fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile py-4 bg-background/80 backdrop-blur-md shadow-sm border-b border-outline-variant">
+        <h1 class="font-headline-sm text-headline-sm tracking-widest text-primary">CHEF IRFAN MALIK</h1>
+        <div class="flex gap-4">
+            <button class="text-primary hover:text-secondary transition-colors duration-300">
+                <span class="material-symbols-outlined" data-icon="search">search</span>
+            </button>
+            <button class="text-primary hover:text-secondary transition-colors duration-300">
+                <span class="material-symbols-outlined" data-icon="menu">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-1 md:ml-64 pt-20 md:pt-0 min-h-screen">
+        <!-- Marketplace Header Section -->
+        <section class="px-margin-mobile md:px-margin-desktop py-12 md:py-20 border-b border-outline-variant relative overflow-hidden bg-surface-container-lowest">
+            <div class="max-w-container-max-width mx-auto relative z-10">
+                <div class="max-w-3xl">
+                    <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6">Explore Recipes</h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl">
+                        Discover a curated collection of culinary masterpieces. From traditional heritage dishes to modern gastronomy, elevate your cooking with Chef Irfan Malik's exclusive techniques.
+                    </p>
+                </div>
+                <!-- Search & Filters -->
+                <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center">
+                    <!-- Search Bar -->
+                    <div class="relative w-full lg:w-96 flex-shrink-0 group">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+                        <input class="w-full bg-surface border-b border-outline-variant py-4 pl-12 pr-4 font-body-md text-body-md text-primary placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-0 transition-colors bg-transparent" placeholder="Search ingredients, cuisines, or chefs..." type="text"/>
+                    </div>
+                    <!-- Category Filters -->
+                    <div class="w-full overflow-x-auto hide-scrollbar">
+                        <div class="flex gap-4 pb-2 min-w-max">
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full bg-primary text-on-primary transition-colors">All</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Pakistani</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Chinese</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">BBQ</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Fast Food</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Continental</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Desserts</button>
+                            <div class="w-px h-6 bg-outline-variant self-center mx-2"></div>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-tertiary-fixed-dim text-tertiary-fixed-dim bg-tertiary-container hover:bg-tertiary-fixed-dim hover:text-tertiary-container transition-colors">Premium</button>
+                            <button class="font-label-caps text-label-caps px-6 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary transition-colors">Free</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipe Grid Section -->
+        <section class="px-margin-mobile md:px-margin-desktop py-16 max-w-container-max-width mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+                <!-- Card 1: Premium Vertical -->
+                <article class="group cursor-pointer flex flex-col gap-4">
+                    <div class="relative w-full aspect-[4/5] overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Seared scallops with pea puree" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhcA8N3CA_52_2blCfEnReC-7HTOm-LhDN7J0jdOaOdvUDIRjslH-RyGVPkSTnt1_9R4LYefiPwUCLg8551kTU0tM2hmnI09mB8H3RkzPu89O2RnawFqVZS4nl3ZGWFTmdRvjS-KaT0wNlgfBm_9qzHJf_coY7wiZueEAhss4ly86XeHfsRjFyoh8l6g3kBvvEwR4KGxIxQNzhV2BLfKiFJsJPHIKa-Sc12_3mI63krc7NOxSSYdKp"/>
+                        <div class="absolute top-4 right-4 bg-tertiary-container text-tertiary-fixed-dim px-3 py-1 font-label-caps text-label-caps tracking-widest backdrop-blur-sm border border-tertiary-fixed-dim/30">PREMIUM</div>
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-label-caps text-label-caps text-secondary">Continental Fusion</span>
+                            <span class="font-label-caps text-label-caps text-primary">$12.00</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-primary mb-2 line-clamp-2 group-hover:text-secondary transition-colors">Pan-Seared Scallops with Pea Velouté</h3>
+                        <div class="flex items-center gap-4 font-body-md text-body-md text-on-surface-variant">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 45 Min</span>
+                            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                            <span>Advanced</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2: Free Vertical -->
+                <article class="group cursor-pointer flex flex-col gap-4">
+                    <div class="relative w-full aspect-[4/5] overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Pakistani Nihari stew" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWy4bT-tuiDOYY-Rt7ijJoFs2J1YS5UHGI012drTMK02nHX4P304mbfcQMIpJH_Wq0Z3z5CKmNEKjgRsnmWJTyrB2AKsSz8YXq4_tqfr3xuRD_vE51jR1crWKnNjh8hKhhGvwthJ7H7578JVT-L5qwh-na_pamZFZ1F9r4hEzqTuhqjzZCmWl8H_kvy985dq4jDVA0RrV5JYtds7Ufy76yg2wgK6MpsB5CNrKRRFPf0bfq2TdBV_ar"/>
+                        <div class="absolute top-4 right-4 bg-surface-container-lowest/90 text-primary px-3 py-1 font-label-caps text-label-caps tracking-widest backdrop-blur-sm border border-outline-variant">FREE</div>
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-label-caps text-label-caps text-secondary">Heritage Pakistani</span>
+                            <span class="font-label-caps text-label-caps text-primary">Free</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-primary mb-2 line-clamp-2 group-hover:text-secondary transition-colors">Authentic Delhi-Style Beef Nihari</h3>
+                        <div class="flex items-center gap-4 font-body-md text-body-md text-on-surface-variant">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 6 Hrs</span>
+                            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                            <span>Medium</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3: Premium Vertical -->
+                <article class="group cursor-pointer flex flex-col gap-4">
+                    <div class="relative w-full aspect-[4/5] overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Chocolate entremet with mirror glaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA88tcykc89DlYZxvPzvqKoYWiC0yrfleWajp5DGzaDZb66XPUAaUsb2Oyw7cDd2d0INyGKTNW3ChrM4uFWFn1hF_LupcYveqhwVYo-1EKhTVPR2O_q2DNOVYYf91fZlNSF6ACzC-jmTP3N9TWp4zVgDfeoJJsDcBTqiwL9FUywJ4X2D9-tSe3hOBSm7c8UNtKofP0VJsbPIzWAMN-xxPb1f2TGNL9-JvyxZ-sNSov55YHrTlzc1lFR"/>
+                        <div class="absolute top-4 right-4 bg-tertiary-container text-tertiary-fixed-dim px-3 py-1 font-label-caps text-label-caps tracking-widest backdrop-blur-sm border border-tertiary-fixed-dim/30">PREMIUM</div>
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-label-caps text-label-caps text-secondary">French Patisserie</span>
+                            <span class="font-label-caps text-label-caps text-primary">$18.00</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-primary mb-2 line-clamp-2 group-hover:text-secondary transition-colors">Noir Chocolate Mirror Glaze Entremet</h3>
+                        <div class="flex items-center gap-4 font-body-md text-body-md text-on-surface-variant">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 12 Hrs</span>
+                            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                            <span>Masterclass</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: Free Vertical -->
+                <article class="group cursor-pointer flex flex-col gap-4">
+                    <div class="relative w-full aspect-[4/5] overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Charred smoky Chicken Tikka pieces" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx3eaxOAnNx1ZV3L82rMWQqLw3zrT1Is8kcsvwvPN05TkP_XLRz3QxHbC4BPyXF9YxRMVFmPVJH30SCtTTGMBFF4vkZhdAjjAZwZxuWkfeDj_KWT3rSq6AJlQ4GhBGoqx2HADPpYHO_XXW5fw-lWLNnHdZGeTgEgasDLG_KsZxEn6UbjdCuz84EYhAJahOcNhTLKvxqGEujK2Mm2XjNdXkmCVWFZo6m2cLZgXwzMjLxuYnPxo_ymLk"/>
+                        <div class="absolute top-4 right-4 bg-surface-container-lowest/90 text-primary px-3 py-1 font-label-caps text-label-caps tracking-widest backdrop-blur-sm border border-outline-variant">FREE</div>
+                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-label-caps text-label-caps text-secondary">BBQ Specials</span>
+                            <span class="font-label-caps text-label-caps text-primary">Free</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-primary mb-2 line-clamp-2 group-hover:text-secondary transition-colors">Smoky Charcoal Chicken Tikka</h3>
+                        <div class="flex items-center gap-4 font-body-md text-body-md text-on-surface-variant">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 4 Hrs</span>
+                            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                            <span>Easy</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 5: Free Horizontal Span (Editorial Feature) -->
+                <article class="group cursor-pointer flex flex-col md:flex-row gap-8 md:col-span-2 xl:col-span-2 border-t border-outline-variant pt-8">
+                    <div class="relative w-full md:w-1/2 aspect-[3/2] overflow-hidden bg-surface-variant">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Grand Awadhi Biryani feast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzLpiumYEUbxqyr8r3IG7CkYPbfcCrxYZ9amXR99CgHaN6HyuSLp6_JTi_vX_MKcShklxUIQTGRnesrTtV_z-xro_Y2y2WFwtWx7s3vNkEJQ6_HOhgTMdjOvvIolNG9c2VpXfKHrLo8chUgtLFSzQ-bsmAa9mf-l-PELICjE5ZUBi786DriohxxRltefro5pc77HbZ9_EKilLBi0_LgQyGiQK69TiN3Qm8llGyuX2QTsS0rYF0dArc"/>
+                        <div class="absolute top-4 right-4 bg-surface-container-lowest/90 text-primary px-3 py-1 font-label-caps text-label-caps tracking-widest backdrop-blur-sm border border-outline-variant">FREE</div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex flex-col justify-center">
+                        <div class="flex items-start mb-4">
+                            <span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Editor's Pick — Heritage Pakistani</span>
+                        </div>
+                        <h3 class="font-display-lg-mobile md:font-headline-lg text-display-lg-mobile md:text-headline-lg text-primary mb-4 group-hover:text-secondary transition-colors leading-tight">The Royal Awadhi Mutton Biryani</h3>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant mb-6 line-clamp-3">Unlock the secrets of traditional dum cooking with this centuries-old recipe. Featuring aromatic basmati rice, tender marinated mutton, and a delicate blend of saffron and kewra.</p>
+                        <div class="flex items-center gap-6 font-body-md text-body-md text-on-surface-variant">
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined" data-icon="schedule">schedule</span> 3.5 Hrs</span>
+                            <span class="w-[2px] h-4 bg-outline-variant"></span>
+                            <span>Hard</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Load More -->
+            <div class="mt-20 flex justify-center border-t border-outline-variant pt-12">
+                <button class="group flex items-center gap-2 font-label-caps text-label-caps text-primary hover:text-secondary transition-colors relative">
+                    <span>LOAD MORE RECIPES</span>
+                    <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" data-icon="expand_more">expand_more</span>
+                    <span class="absolute -bottom-2 left-0 w-0 h-px bg-secondary transition-all duration-300 group-hover:w-full"></span>
+                </button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

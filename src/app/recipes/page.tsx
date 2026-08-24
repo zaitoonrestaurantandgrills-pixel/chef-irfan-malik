@@ -7,8 +7,8 @@ import RecipeFilters from '@/components/RecipeFilters';
 import { BookOpen } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Recipes',
-  description: 'Browse Chef Irfan Malik\'s complete recipe collection — from free classics to premium culinary masterclasses.',
+  title: 'Recipe Marketplace',
+  description: 'Explore curated culinary masterpieces from Chef Irfan Malik. Master traditional heritage dishes and modern gastronomy.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -60,58 +60,101 @@ export default async function RecipesPage({ searchParams }: PageProps) {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh' }}>
-        {/* Header */}
-        <section style={{
-          background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%)',
-          borderBottom: '1px solid var(--color-border)',
-          padding: '3rem 0',
-        }}>
-          <div className="container" style={{ textAlign: 'center' }}>
-            <span className="section-label">Culinary Collection</span>
-            <h1 className="heading-xl" style={{ marginBottom: '0.75rem' }}>
-              Recipe Marketplace
-            </h1>
-            <div className="divider-gold" />
-            <p style={{ color: 'var(--color-text-muted)', maxWidth: '500px', margin: '1rem auto 0', fontSize: '1rem' }}>
-              From free everyday classics to premium culinary masterclasses — all crafted by Chef Irfan Malik.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
-              {[
-                { label: 'Total Recipes', value: total },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>{value}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{label}</div>
-                </div>
-              ))}
+
+      <main style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+        {/* Marketplace Header Section */}
+        <section
+          style={{
+            padding: '4rem 0 3rem',
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid var(--color-border)',
+          }}
+        >
+          <div className="container">
+            <div style={{ maxWidth: '780px', marginBottom: '2.5rem' }}>
+              <span className="font-label-caps" style={{ color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem' }}>
+                Curated Digital Cookbook
+              </span>
+              <h1
+                className="font-display-lg-mobile md:font-display-lg"
+                style={{
+                  color: 'var(--color-primary)',
+                  marginBottom: '1rem',
+                }}
+              >
+                Explore Recipes
+              </h1>
+              <p
+                className="font-body-lg"
+                style={{
+                  color: 'var(--color-text-muted)',
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}
+              >
+                Discover a curated collection of culinary masterpieces. From traditional heritage dishes to modern gastronomy, elevate your cooking with Chef Irfan Malik&apos;s exclusive techniques.
+              </p>
             </div>
+
+            {/* Search & Category Filter Pills */}
+            <RecipeFilters categories={categories} currentParams={params} />
           </div>
         </section>
 
-        {/* Filters + Grid */}
-        <section style={{ padding: '2.5rem 0 4rem' }}>
+        {/* Recipe Grid Section */}
+        <section style={{ padding: '3.5rem 0 6rem' }}>
           <div className="container">
-            <RecipeFilters categories={categories} currentParams={params} />
-
             {recipes.length === 0 ? (
-              <div style={{
-                textAlign: 'center', padding: '5rem 2rem',
-                background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--color-border)', marginTop: '2rem',
-              }}>
-                <BookOpen size={56} style={{ color: 'var(--color-text-subtle)', margin: '0 auto 1.5rem', display: 'block' }} />
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '0.75rem' }}>No recipes found</h3>
-                <p style={{ color: 'var(--color-text-muted)' }}>Try adjusting your filters or search terms.</p>
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '5rem 2rem',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'var(--shadow-ambient)',
+                }}
+              >
+                <BookOpen
+                  size={48}
+                  style={{
+                    color: 'var(--color-text-subtle)',
+                    margin: '0 auto 1.25rem',
+                    display: 'block',
+                  }}
+                />
+                <h3
+                  className="font-headline-sm"
+                  style={{ color: 'var(--color-primary)', marginBottom: '0.5rem' }}
+                >
+                  No recipes match your criteria
+                </h3>
+                <p className="font-body-md" style={{ color: 'var(--color-text-muted)' }}>
+                  Try clearing search filters or checking back soon for new additions.
+                </p>
               </div>
             ) : (
               <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', marginTop: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
-                    Showing <strong style={{ color: 'var(--color-text)' }}>{recipes.length}</strong> of <strong style={{ color: 'var(--color-text)' }}>{total}</strong> recipes
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '2rem',
+                  }}
+                >
+                  <p className="font-label-caps" style={{ color: 'var(--color-text-muted)', margin: 0 }}>
+                    Showing {recipes.length} of {total} recipes
                   </p>
                 </div>
-                <div className="grid-cards">
+
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '2.5rem',
+                  }}
+                >
                   {recipes.map((recipe) => (
                     <RecipeCard key={recipe.id} recipe={recipe} />
                   ))}
@@ -119,24 +162,41 @@ export default async function RecipesPage({ searchParams }: PageProps) {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '3rem', flexWrap: 'wrap' }}>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                      <a
-                        key={p}
-                        href={`/recipes?${new URLSearchParams({ ...params, page: String(p) }).toString()}`}
-                        style={{
-                          width: '40px', height: '40px', borderRadius: 'var(--radius-sm)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          background: p === page ? 'var(--color-primary)' : 'var(--color-surface)',
-                          color: p === page ? '#0A0A0A' : 'var(--color-text-muted)',
-                          border: `1px solid ${p === page ? 'var(--color-primary)' : 'var(--color-border)'}`,
-                          fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none',
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {p}
-                      </a>
-                    ))}
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      marginTop: '4rem',
+                      borderTop: '1px solid var(--color-border)',
+                      paddingTop: '2.5rem',
+                    }}
+                  >
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                      const isActive = p === page;
+                      return (
+                        <a
+                          key={p}
+                          href={`/recipes?${new URLSearchParams({ ...params, page: String(p) }).toString()}`}
+                          className="font-label-caps"
+                          style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: 'var(--radius-sm)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: isActive ? 'var(--color-primary)' : '#ffffff',
+                            color: isActive ? '#ffffff' : 'var(--color-primary)',
+                            border: `1px solid ${isActive ? 'var(--color-primary)' : 'var(--color-border)'}`,
+                            textDecoration: 'none',
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {p}
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
               </>
@@ -144,6 +204,7 @@ export default async function RecipesPage({ searchParams }: PageProps) {
           </div>
         </section>
       </main>
+
       <Footer />
     </>
   );

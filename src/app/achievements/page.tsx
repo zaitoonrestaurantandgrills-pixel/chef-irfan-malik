@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
-import { Trophy, Award, Medal, Tv, CheckCircle2 } from 'lucide-react';
+import { Trophy, Award, Medal, Tv, CheckCircle2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Achievements, Awards & Certifications — Chef Irfan Malik',
-  description: 'Explore the professional certifications, culinary competition honors, awards, and media features of Chef Irfan Malik.',
+  title: 'Achievements, Honors & Certifications — Chef Irfan Malik',
+  description: 'Explore the awards, professional food safety honors, culinary masterclass certifications, and industry recognitions of Chef Irfan Malik.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -29,88 +29,243 @@ export default async function AchievementsPage() {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh' }}>
-        {/* Header */}
-        <section style={{
-          background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%)',
-          borderBottom: '1px solid var(--color-border)',
-          padding: '4rem 0 3rem',
-          textAlign: 'center',
-        }}>
-          <div className="container">
-            <span className="section-label">Professional Honors</span>
-            <h1 className="heading-xl" style={{ marginBottom: '0.75rem' }}>
-              Achievements & Certifications
+
+      <main style={{ minHeight: '100vh', backgroundColor: 'var(--color-bg)' }}>
+        {/* Editorial Header */}
+        <section
+          style={{
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid var(--color-border)',
+            padding: '4rem 0 3rem',
+            textAlign: 'center',
+          }}
+        >
+          <div className="container" style={{ maxWidth: '780px' }}>
+            <span
+              className="font-label-caps"
+              style={{
+                color: 'var(--color-secondary)',
+                display: 'block',
+                marginBottom: '0.5rem',
+                letterSpacing: '0.15em',
+              }}
+            >
+              Excellence & Industry Recognition
+            </span>
+            <h1
+              className="font-display-lg-mobile md:font-display-lg"
+              style={{
+                color: 'var(--color-primary)',
+                marginBottom: '1rem',
+              }}
+            >
+              Honors & Certifications
             </h1>
-            <div className="divider-gold" />
-            <p style={{ color: 'var(--color-text-muted)', maxWidth: '540px', margin: '1rem auto 0' }}>
-              Recognized for culinary excellence, professional certifications, cooking competitions, and industry contributions.
+            <p
+              className="font-body-lg"
+              style={{
+                color: 'var(--color-text-muted)',
+                lineHeight: 1.7,
+                margin: '0 auto',
+              }}
+            >
+              Documenting Chef Irfan Malik&apos;s culinary awards, food safety conference recognitions, and professional milestones.
             </p>
           </div>
         </section>
 
-        {/* List */}
-        <section style={{ padding: '4rem 0 5rem' }}>
-          <div className="container" style={{ maxWidth: '960px' }}>
+        {/* Achievements Timeline & Cards */}
+        <section style={{ padding: '4rem 0 6rem' }}>
+          <div className="container" style={{ maxWidth: '1020px' }}>
             {achievements.length === 0 ? (
-              <div className="card" style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                <Trophy size={56} style={{ margin: '0 auto 1.25rem', color: 'var(--color-text-subtle)', display: 'block' }} />
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>
-                  No achievements published yet.
+              <div
+                style={{
+                  padding: '5rem 2rem',
+                  textAlign: 'center',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'var(--shadow-ambient)',
+                }}
+              >
+                <Trophy
+                  size={48}
+                  style={{ margin: '0 auto 1.25rem', color: 'var(--color-text-subtle)', display: 'block' }}
+                />
+                <h3 className="font-headline-sm" style={{ color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
+                  No achievements published yet
                 </h3>
-                <p style={{ fontSize: '0.9rem' }}>Check back soon for new professional updates.</p>
+                <p className="font-body-md" style={{ color: 'var(--color-text-muted)' }}>
+                  Check back soon for new professional updates.
+                </p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                 {achievements.map((item) => {
                   const Icon = iconMap[item.type] || Trophy;
-                  return (
-                    <div key={item.id} className="card" style={{ padding: '2rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
-                      <div style={{
-                        width: '56px', height: '56px', borderRadius: '50%',
-                        background: 'var(--color-primary-muted)', border: '1px solid var(--color-border-gold)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'var(--color-primary)', flexShrink: 0,
-                      }}>
-                        <Icon size={26} />
-                      </div>
 
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', fontWeight: 700, margin: 0 }}>
+                  return (
+                    <article
+                      key={item.id}
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: 'var(--radius-sm)',
+                        boxShadow: 'var(--shadow-ambient)',
+                        overflow: 'hidden',
+                        display: 'grid',
+                        gridTemplateColumns: item.image ? '1fr 340px' : '1fr',
+                        gap: '2rem',
+                      }}
+                      className="achievement-card"
+                    >
+                      {/* Left: Content & Badges */}
+                      <div
+                        style={{
+                          padding: '2.25rem',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          gap: '1.5rem',
+                        }}
+                      >
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                            <span
+                              className="font-label-caps"
+                              style={{
+                                backgroundColor: 'var(--color-tertiary-container)',
+                                color: 'var(--color-tertiary-fixed)',
+                                border: '1px solid rgba(255,222,165,0.3)',
+                                padding: '0.25rem 0.625rem',
+                                borderRadius: 'var(--radius-sm)',
+                                fontSize: '10px',
+                              }}
+                            >
+                              {item.type.replace('_', ' ')}
+                            </span>
+
+                            {item.date && (
+                              <span
+                                className="font-label-caps"
+                                style={{
+                                  color: 'var(--color-text-muted)',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.35rem',
+                                  fontSize: '11px',
+                                }}
+                              >
+                                <Calendar size={13} />
+                                {new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                              </span>
+                            )}
+                          </div>
+
+                          <h2
+                            style={{
+                              fontFamily: 'var(--font-heading)',
+                              fontSize: '1.5rem',
+                              fontWeight: 600,
+                              color: 'var(--color-primary)',
+                              marginBottom: '0.5rem',
+                              lineHeight: 1.25,
+                            }}
+                          >
                             {item.title}
                           </h2>
-                          <span className="badge badge-premium" style={{ fontSize: '0.7rem' }}>
-                            {item.type.replace('_', ' ')}
-                          </span>
+
+                          {item.organization && (
+                            <div
+                              className="font-label-caps"
+                              style={{
+                                color: 'var(--color-secondary)',
+                                fontSize: '12px',
+                                marginBottom: '1.25rem',
+                              }}
+                            >
+                              {item.organization}
+                            </div>
+                          )}
+
+                          {item.description && (
+                            <p
+                              className="font-body-md"
+                              style={{
+                                color: 'var(--color-text-muted)',
+                                lineHeight: 1.75,
+                                margin: 0,
+                              }}
+                            >
+                              {item.description}
+                            </p>
+                          )}
                         </div>
 
-                        {item.organization && (
-                          <div style={{ color: 'var(--color-primary)', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
-                            {item.organization}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)' }}>
+                          <div
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              backgroundColor: 'var(--color-surface-container)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <Icon size={16} />
                           </div>
-                        )}
-
-                        {item.description && (
-                          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.7, margin: 0 }}>
-                            {item.description}
-                          </p>
-                        )}
+                          <span className="font-label-caps" style={{ fontSize: '11px', color: 'var(--color-text)' }}>
+                            Verified Honor
+                          </span>
+                        </div>
                       </div>
-                    </div>
+
+                      {/* Right: Certificate / Award Photo (if present) */}
+                      {item.image && (
+                        <div
+                          style={{
+                            position: 'relative',
+                            backgroundColor: 'var(--color-surface-variant)',
+                            minHeight: '260px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            overflow: 'hidden',
+                            borderLeft: '1px solid var(--color-border)',
+                          }}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                            }}
+                          />
+                        </div>
+                      )}
+                    </article>
                   );
                 })}
               </div>
             )}
 
             <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-              <Link href="/recipes" className="btn btn-primary btn-lg">
-                Explore Chef Irfan&apos;s Recipes
+              <Link href="/gallery" className="btn btn-primary btn-lg" style={{ marginRight: '1rem' }}>
+                View Full Photo Gallery
+              </Link>
+              <Link href="/recipes" className="btn btn-secondary btn-lg">
+                Explore Recipes
               </Link>
             </div>
           </div>
         </section>
       </main>
+
       <Footer />
     </>
   );

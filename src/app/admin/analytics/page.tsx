@@ -164,14 +164,6 @@ export default async function AdminAnalyticsPage() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 860px) {
-          div[style*="grid-template-columns: 1fr 1fr"] {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </AdminLayout>
   );
 }

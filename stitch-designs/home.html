@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Chef Irfan Malik - Crafting Flavors. Sharing Knowledge.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dbdad6",
+                        "on-primary": "#ffffff",
+                        "primary": "#000000",
+                        "outline-variant": "#c4c7c7",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary": "#000000",
+                        "inverse-on-surface": "#f2f1ed",
+                        "tertiary-fixed-dim": "#e9c176",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#944925",
+                        "inverse-surface": "#2f312e",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb596",
+                        "background": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#773310",
+                        "outline": "#747878",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary-fixed": "#360f00",
+                        "tertiary-fixed": "#ffdea5",
+                        "on-primary-container": "#858383",
+                        "on-surface-variant": "#444748",
+                        "surface": "#faf9f5",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e9e8e4",
+                        "surface-container": "#efeeea",
+                        "tertiary-container": "#261900",
+                        "primary-container": "#1c1b1b",
+                        "secondary-fixed": "#ffdbcd",
+                        "on-tertiary-fixed": "#261900",
+                        "on-primary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#76320f",
+                        "secondary-container": "#fe9e72",
+                        "primary-fixed": "#e5e2e1",
+                        "on-background": "#1b1c1a",
+                        "on-tertiary-container": "#a17f3b",
+                        "on-tertiary-fixed-variant": "#5d4201",
+                        "surface-container-low": "#f4f4f0",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "surface-tint": "#5f5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base-unit": "8px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #faf9f5; }
+        .ambient-shadow { box-shadow: 0 4px 20px rgba(26, 26, 26, 0.04); }
+        .gold-divider { border-color: #e9c176; }
+        .material-symbols-outlined { font-weight: 100; font-size: 24px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased">
+    <!-- TopAppBar -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-background/80 backdrop-blur-md border-b border-outline-variant">
+        <div class="font-headline-sm text-headline-sm tracking-widest text-primary">CHEF IRFAN MALIK</div>
+        <div class="hidden md:flex gap-8">
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-300" href="#">Portfolio</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-300" href="#">Marketplace</a>
+            <a class="font-label-caps text-label-caps text-secondary border-b border-secondary hover:text-secondary transition-colors duration-300" href="#">About</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-300" href="#">Contact</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="font-label-caps text-label-caps text-primary cursor-pointer transition-opacity active:opacity-70">Account</button>
+            <span class="material-symbols-outlined cursor-pointer text-primary" data-icon="shopping_bag">shopping_bag</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 md:pt-48 md:pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div class="w-full md:w-1/2">
+            <h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-primary mb-6">Crafting Flavors.<br/>Sharing Knowledge.</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-md">Discover professional recipes, culinary techniques and carefully crafted dishes from Chef Irfan Malik.</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button class="bg-primary text-on-primary font-label-caps text-label-caps py-4 px-8 rounded-none cursor-pointer transition-opacity hover:opacity-90">Explore Recipes</button>
+                <button class="border border-primary text-primary font-label-caps text-label-caps py-4 px-8 rounded-none cursor-pointer transition-colors hover:bg-surface-variant">Meet Chef Irfan</button>
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 relative h-[500px] md:h-[700px]">
+            <img class="absolute inset-0 w-full h-full object-cover rounded-DEFAULT ambient-shadow" data-alt="A high-end editorial portrait of a professional chef in a pristine modern kitchen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQjs6gSkhsVkgFyRJfv38pxIYgZ9qMoQ7_SaRe9lZ3ZceHh7ZdNJ9--nEnVRPCc8yJLN-Ow86YztU07HMFAoU9Y_V5eAPuk0qa2hi3hhatCWQkfWB3wMQM-gB70cejUrMj0KxEBEf7FF14cMj3LzOMHV28N5SUXPumgveTzs6EeFK-TUN8SqADJOA3VuvuMOuyz7nRY5KRySnxD542cVDI_X_XKbQDbEpP-PzXyHkRCp5il_azqbuT"/>
+        </div>
+    </header>
+
+    <!-- Signature Recipes -->
+    <section class="py-20 md:py-32 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+        <div class="max-w-container-max-width mx-auto">
+            <div class="flex justify-between items-end mb-16 border-b border-outline-variant pb-4">
+                <h2 class="font-headline-lg text-headline-lg text-primary">Signature Recipes</h2>
+                <a class="font-label-caps text-label-caps text-primary border-b border-tertiary-fixed-dim hover:text-secondary transition-colors pb-1" href="#">View All</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Recipe 1 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-[4/5] relative overflow-hidden mb-6 rounded-DEFAULT ambient-shadow">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Seared scallops on green pea purée" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdLpIZqTQah3p1KR0GHTK9NI8zOq1tcLDtmnXA939cSdL9IVo-hGd6yCoLScMoNxz_PTgPV4Gca31glPpRlgVPxvHzR5KmMKQqvDPe53yi39Q2NHTARczf4WdDTww5Z0KWDSYSSHuMQz9m9s5AK_Len6lja2X7JNS6pzOQncHCcTypt6o1UmIXVdVWnxSYvx_ORkl5mknu-3nzFOekSgK6wI6lvXHSVynJNGXLXIpw8o3UfMlUZ-Fg"/>
+                    </div>
+                    <div class="flex gap-2 items-center mb-2">
+                        <span class="w-1 h-1 bg-tertiary-fixed-dim rounded-full"></span>
+                        <span class="font-label-caps text-label-caps text-on-surface-variant">Appetizer</span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm text-primary mb-2">Seared Hokkaido Scallops</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Pea purée, lemon beurre blanc, micro cilantro.</p>
+                </div>
+                <!-- Premium Recipe -->
+                <div class="group cursor-pointer relative">
+                    <div class="aspect-[4/5] relative overflow-hidden mb-6 rounded-DEFAULT ambient-shadow">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter brightness-75" data-alt="Medium-rare wagyu beef tenderloin with dark demi-glace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI2Ns9r0akveFQn2qKHRzn40pb4IVXjDBIFSbAslZYHcnEGGu5tjrqv4kcf2GmmVCkzOuklAFtsUpguHuYfMjH-pNUcw_i1F0gESJ2b3Dn8onvbuD7RJchx_KBFrnNgrVRUDvC9EuW5QGFeOA0omhUFeL7BN0xolTHMGapPs7Vs3kBn6LQ5DPxejV8oY4LyPNnbDXkwQEGrD-h-Uq0OzlsW-a14GIEnuqdjXS5CmXjcvpm4I46Ow-k"/>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-primary/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span class="material-symbols-outlined text-on-primary mb-4" data-icon="lock" style="font-size: 32px;">lock</span>
+                            <button class="bg-secondary text-on-secondary font-label-caps text-label-caps py-3 px-6 rounded-none">Unlock Recipe</button>
+                        </div>
+                    </div>
+                    <div class="absolute top-4 right-4 bg-surface px-3 py-1 flex items-center gap-1 rounded-sm">
+                        <span class="material-symbols-outlined text-secondary" data-icon="star" style="font-size: 16px;">star</span>
+                        <span class="font-label-caps text-label-caps text-secondary text-[10px]">Premium</span>
+                    </div>
+                    <div class="flex gap-2 items-center mb-2">
+                        <span class="w-1 h-1 bg-tertiary-fixed-dim rounded-full"></span>
+                        <span class="font-label-caps text-label-caps text-on-surface-variant">Main Course</span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm text-primary mb-2">Wagyu Tenderloin with Demi-Glace</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Mastering the perfect sear and reduction.</p>
+                </div>
+                <!-- Recipe 3 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-[4/5] relative overflow-hidden mb-6 rounded-DEFAULT ambient-shadow">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Mille-feuille dessert with puff pastry and cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACRUIGK21XFeOpodqCC2ymW9ZbZv2CUJCWA7b-TF-DVkp2r4p4_yVi5aOBhKY9bFu2xUKNXsB13VVz4yp9KMiEDA2UBOV9vGZnN249-vNfKdNcQKYUguFxraws9OhwHyoIrIdTgMFJLy39wwaQQQD73isvNyNEecKYJITLp6d89tuN4Km1tEbLPm8aEn0zavwtVrhvTGs55jlX8h4zOFHZqq7n743ATORr6otUdgPTH-GOPaQh-GBx"/>
+                    </div>
+                    <div class="flex gap-2 items-center mb-2">
+                        <span class="w-1 h-1 bg-tertiary-fixed-dim rounded-full"></span>
+                        <span class="font-label-caps text-label-caps text-on-surface-variant">Dessert</span>
+                    </div>
+                    <h3 class="font-headline-sm text-headline-sm text-primary mb-2">Vanilla Bean Mille-Feuille</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Classic technique, modern presentation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Chef Irfan -->
+    <section class="py-20 md:py-32 px-margin-mobile md:px-margin-desktop">
+        <div class="max-w-container-max-width mx-auto flex flex-col md:flex-row gap-16 items-center">
+            <div class="w-full md:w-5/12">
+                <div class="aspect-[3/4] relative ambient-shadow rounded-DEFAULT overflow-hidden p-4 bg-white">
+                    <img class="w-full h-full object-cover" data-alt="Portrait of Chef Irfan in whites" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK-K61cItUGYaD6k-cTEMg1I4yv9q7J1JG7-gultOOUO_wp9035iMPnWz1vevvlpxAscyLP_1qcqZzmNmFZYKj5L2dYXwDx4QxT4bV1HRtkFWrojGgODsh48hrYGFEoJwELkRh4x_QRmxhFeg65e6WkaHoiiGT31GiruCQpyc-artzKLIWx7E6fSozHuksPKUdv-KRVq9H5-grOzjI5U6f9OTVSxmPtiwT0nOi3X5Kfno9_QtHTSGW"/>
+                </div>
+            </div>
+            <div class="w-full md:w-7/12 md:pl-12">
+                <h2 class="font-headline-lg text-headline-lg text-primary mb-8">Mastering the Craft</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant mb-12">With over a decade of experience in Michelin-starred kitchens globally, Chef Irfan brings a philosophy of respect for ingredients and precision in execution. His approach blends traditional culinary heritage with contemporary techniques, resulting in dishes that are both comforting and intellectually stimulating.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-outline-variant">
+                    <div>
+                        <div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-2">15+</div>
+                        <div class="font-label-caps text-label-caps text-on-surface-variant">Years Experience</div>
+                    </div>
+                    <div>
+                        <div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-2">100+</div>
+                        <div class="font-label-caps text-label-caps text-on-surface-variant">Signature Recipes</div>
+                    </div>
+                    <div>
+                        <div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-2">50+</div>
+                        <div class="font-label-caps text-label-caps text-on-surface-variant">Culinary Masterclasses</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-20 px-margin-desktop flex flex-col md:flex-row justify-between items-start bg-primary text-on-primary border-t border-outline-variant flat">
+        <div class="mb-10 md:mb-0">
+            <div class="font-headline-md text-headline-md text-on-primary mb-4">CHEF IRFAN MALIK</div>
+            <p class="font-label-caps text-label-caps text-on-primary/70">© 2024 Chef Irfan Malik. All Rights Reserved.</p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 md:gap-12">
+            <a class="font-label-caps text-label-caps text-on-primary/70 hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+            <a class="font-label-caps text-label-caps text-on-primary/70 hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+            <a class="font-label-caps text-label-caps text-on-primary/70 hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Press Kit</a>
+            <a class="font-label-caps text-label-caps text-on-primary/70 hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Affiliates</a>
+        </div>
+    </footer>
+</body>
+</html>

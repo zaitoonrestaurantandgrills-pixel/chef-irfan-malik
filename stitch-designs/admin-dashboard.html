@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Chef Irfan Malik - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dbdad6",
+                        "on-primary": "#ffffff",
+                        "primary": "#000000",
+                        "outline-variant": "#c4c7c7",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary": "#000000",
+                        "inverse-on-surface": "#f2f1ed",
+                        "tertiary-fixed-dim": "#e9c176",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#944925",
+                        "inverse-surface": "#2f312e",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb596",
+                        "background": "#faf9f5",
+                        "surface-variant": "#e3e2df",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#773310",
+                        "outline": "#747878",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary-fixed": "#360f00",
+                        "tertiary-fixed": "#ffdea5",
+                        "on-primary-container": "#858383",
+                        "on-surface-variant": "#444748",
+                        "surface": "#faf9f5",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e9e8e4",
+                        "surface-container": "#efeeea",
+                        "tertiary-container": "#261900",
+                        "primary-container": "#1c1b1b",
+                        "secondary-fixed": "#ffdbcd",
+                        "on-tertiary-fixed": "#261900",
+                        "on-primary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#76320f",
+                        "secondary-container": "#fe9e72",
+                        "primary-fixed": "#e5e2e1",
+                        "on-background": "#1b1c1a",
+                        "on-tertiary-container": "#a17f3b",
+                        "on-tertiary-fixed-variant": "#5d4201",
+                        "surface-container-low": "#f4f4f0",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "surface-tint": "#5f5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base-unit": "8px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: theme('colors.background'); color: theme('colors.on-surface'); }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Playfair Display', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; font-size: 20px; }
+        .nav-item.active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+        .shadow-ambient { box-shadow: 0 4px 20px rgba(26, 26, 26, 0.04); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.outline-variant'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-hidden h-screen flex">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="hidden md:flex flex-col h-full border-r border-outline-variant bg-surface shadow-sm h-screen w-64 fixed left-0 top-0 z-40 transition-transform duration-300">
+        <div class="px-6 py-8 border-b border-outline-variant/30 flex items-center justify-between">
+            <span class="font-headline-sm text-headline-sm text-primary">Irfan Malik</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-1 px-4 font-label-caps text-label-caps">
+            <a class="nav-item active flex items-center gap-3 px-4 py-3 text-on-secondary-container bg-secondary-container rounded-none border-l-4 border-secondary transition-all" href="#">
+                <span class="material-symbols-outlined" data-icon="dashboard" data-weight="fill">dashboard</span>
+                Dashboard
+            </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all border-l-4 border-transparent hover:border-outline-variant/50" href="#">
+                <span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+                My Recipes
+            </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all border-l-4 border-transparent hover:border-outline-variant/50" href="#">
+                <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                Order History
+            </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all border-l-4 border-transparent hover:border-outline-variant/50" href="#">
+                <span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+                Marketplace
+            </a>
+            <a class="nav-item flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all border-l-4 border-transparent hover:border-outline-variant/50" href="#">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+        </nav>
+        <div class="p-4 border-t border-outline-variant/30 font-label-caps text-label-caps flex flex-col gap-1">
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+                <span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+                Support
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+                <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+            <div class="mt-4 flex items-center gap-3 px-2">
+                <div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant flex-shrink-0">
+                    <img alt="Chef Irfan Malik Profile" class="w-full h-full object-cover" data-alt="Chef portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy7M8o8ZNOro3No8ixDgLtF_1_JwJ2AiRQ8EbrIovixQhDDT00NuhI7aiYOPxTjuDw8UOL_7J2qh7lLHQu5FZCm0Wa5GqQkSDu73rY7Dr5Q1TfJs_WGC6tereZhN_mh6DMexIZvui9GZUplbQt2RudTuniAT3y6nY71h-WDUpA5n0h1r8Cakjhe5QQTcJAtUXTVRoXyiWCcdlRFhnmQ5Osfx10n5il0Fx_gXdqvW4M9vJS8IcWhWHZ"/>
+                </div>
+                <div class="flex flex-col truncate">
+                    <span class="text-xs font-semibold text-on-surface">Irfan Malik</span>
+                    <span class="text-[10px] text-on-surface-variant uppercase tracking-wider">Premium Access</span>
+                </div>
+            </div>
+            <button class="mt-4 w-full py-2 bg-primary text-on-primary text-[10px] uppercase tracking-widest font-semibold hover:bg-surface-tint transition-colors duration-300">
+                Book Private Event
+            </button>
+        </div>
+    </aside>
+
+    <!-- MOBILE TOP NAV -->
+    <header class="md:hidden fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile py-4 bg-background/90 backdrop-blur-md border-b border-outline-variant">
+        <span class="font-headline-sm text-headline-sm text-primary">Irfan Malik</span>
+        <button class="text-on-surface p-2">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </header>
+
+    <!-- MAIN CONTENT CANVAS -->
+    <main class="flex-1 md:ml-64 h-full overflow-y-auto bg-surface-container-low relative">
+        <div class="sticky top-0 z-30 flex justify-between items-center px-margin-mobile md:px-12 py-6 bg-surface-container-low/95 backdrop-blur-sm border-b border-outline-variant/20">
+            <div class="relative w-full max-w-md hidden md:block">
+                <span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input class="w-full bg-transparent border-b border-outline-variant/50 focus:border-secondary py-2 pl-8 pr-4 text-sm font-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none transition-colors" placeholder="Search orders, recipes, or customers..." type="text"/>
+            </div>
+            <div class="flex items-center gap-6 ml-auto">
+                <button class="relative text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-secondary rounded-full border border-surface-container-low"></span>
+                </button>
+                <div class="h-6 w-px bg-outline-variant/40 hidden md:block"></div>
+                <div class="flex flex-col text-right hidden md:flex font-body-md">
+                    <span class="text-xs text-on-surface-variant">Today's Revenue</span>
+                    <span class="text-sm font-semibold text-primary">$4,250</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-margin-mobile md:p-12 max-w-[1440px] mx-auto pt-24 md:pt-12">
+            <header class="mb-12">
+                <p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Overview</p>
+                <h1 class="font-headline-md text-headline-md text-primary mb-4">Good Morning, Chef Irfan.</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Here is the latest performance data for your digital culinary empire. Revenue is up 12% this week, driven by masterclass enrollments.</p>
+            </header>
+
+            <!-- KPI Analytics Grid -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <!-- KPI Card 1 -->
+                <div class="bg-surface-container-lowest p-6 shadow-ambient border border-outline-variant/20 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-80"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-label-caps text-label-caps text-on-surface-variant">Total Revenue</p>
+                            <h3 class="font-headline-sm text-headline-sm text-primary mt-1">$124,500</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                            <span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 text-xs font-semibold text-[#2b7a0b]">
+                        <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        <span>+12.5% from last month</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 2 -->
+                <div class="bg-surface-container-lowest p-6 shadow-ambient border border-outline-variant/20">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-label-caps text-label-caps text-on-surface-variant">Total Orders</p>
+                            <h3 class="font-headline-sm text-headline-sm text-primary mt-1">1,482</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 text-xs font-semibold text-[#2b7a0b]">
+                        <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        <span>+8.2% from last month</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 3 -->
+                <div class="bg-surface-container-lowest p-6 shadow-ambient border border-outline-variant/20">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-label-caps text-label-caps text-on-surface-variant">Active Customers</p>
+                            <h3 class="font-headline-sm text-headline-sm text-primary mt-1">8,924</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                            <span class="material-symbols-outlined text-sm">groups</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 text-xs font-semibold text-[#2b7a0b]">
+                        <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        <span>+3.1% from last month</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 4 -->
+                <div class="bg-surface-container-lowest p-6 shadow-ambient border border-outline-variant/20">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-label-caps text-label-caps text-on-surface-variant">Published Recipes</p>
+                            <h3 class="font-headline-sm text-headline-sm text-primary mt-1">142</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                            <span class="material-symbols-outlined text-sm">restaurant_menu</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 text-xs font-semibold text-on-surface-variant">
+                        <span class="material-symbols-outlined text-[14px]">update</span>
+                        <span>Last published 2 days ago</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Data Section -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Recent Orders Table -->
+                <section class="xl:col-span-2 bg-surface-container-lowest shadow-ambient border border-outline-variant/20">
+                    <div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+                        <h2 class="font-headline-sm text-[20px] font-medium text-primary">Recent Orders</h2>
+                        <button class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors flex items-center gap-1">
+                            View All <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low font-label-caps text-[10px] text-on-surface-variant tracking-widest border-b border-outline-variant/20">
+                                    <th class="py-4 px-6 font-semibold">Order ID</th>
+                                    <th class="py-4 px-6 font-semibold">Customer</th>
+                                    <th class="py-4 px-6 font-semibold">Item</th>
+                                    <th class="py-4 px-6 font-semibold">Date</th>
+                                    <th class="py-4 px-6 font-semibold">Status</th>
+                                    <th class="py-4 px-6 font-semibold text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-body-md text-sm text-on-surface divide-y divide-outline-variant/10">
+                                <tr class="hover:bg-surface transition-colors group">
+                                    <td class="py-4 px-6 font-mono text-xs text-on-surface-variant">#ORD-9021</td>
+                                    <td class="py-4 px-6 flex items-center gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-surface-variant text-[10px] flex items-center justify-center font-bold text-on-surface">JD</div>
+                                        <span>Julian Dempsey</span>
+                                    </td>
+                                    <td class="py-4 px-6">Truffle Masterclass</td>
+                                    <td class="py-4 px-6 text-on-surface-variant text-xs">Oct 24, 2024</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-[#f0f9eb] text-[#2b7a0b] text-[10px] uppercase tracking-wider font-semibold border border-[#d6efcc]">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#2b7a0b]"></span> Completed
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right font-medium">$299.00</td>
+                                </tr>
+                                <tr class="hover:bg-surface transition-colors group">
+                                    <td class="py-4 px-6 font-mono text-xs text-on-surface-variant">#ORD-9020</td>
+                                    <td class="py-4 px-6 flex items-center gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-surface-variant text-[10px] flex items-center justify-center font-bold text-on-surface">SK</div>
+                                        <span>Sarah Kensington</span>
+                                    </td>
+                                    <td class="py-4 px-6">Signature Knife Set</td>
+                                    <td class="py-4 px-6 text-on-surface-variant text-xs">Oct 24, 2024</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-surface-container-high text-on-surface-variant text-[10px] uppercase tracking-wider font-semibold border border-outline-variant/30">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span> Processing
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right font-medium">$450.00</td>
+                                </tr>
+                                <tr class="hover:bg-surface transition-colors group">
+                                    <td class="py-4 px-6 font-mono text-xs text-on-surface-variant">#ORD-9019</td>
+                                    <td class="py-4 px-6 flex items-center gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-surface-variant text-[10px] flex items-center justify-center font-bold text-on-surface">MR</div>
+                                        <span>Marcus Rossi</span>
+                                    </td>
+                                    <td class="py-4 px-6">Exclusive Recipe E-Book</td>
+                                    <td class="py-4 px-6 text-on-surface-variant text-xs">Oct 23, 2024</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-[#f0f9eb] text-[#2b7a0b] text-[10px] uppercase tracking-wider font-semibold border border-[#d6efcc]">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#2b7a0b]"></span> Completed
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right font-medium">$49.00</td>
+                                </tr>
+                                <tr class="hover:bg-surface transition-colors group">
+                                    <td class="py-4 px-6 font-mono text-xs text-on-surface-variant">#ORD-9018</td>
+                                    <td class="py-4 px-6 flex items-center gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-surface-variant text-[10px] flex items-center justify-center font-bold text-on-surface">EP</div>
+                                        <span>Elena Petrova</span>
+                                    </td>
+                                    <td class="py-4 px-6">Private Dining Deposit</td>
+                                    <td class="py-4 px-6 text-on-surface-variant text-xs">Oct 23, 2024</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-surface-container-high text-on-surface-variant text-[10px] uppercase tracking-wider font-semibold border border-outline-variant/30">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Pending
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right font-medium">$1,000.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Top Performing Items & Revenue Pulse -->
+                <section class="flex flex-col gap-8">
+                    <div class="bg-surface-container-lowest shadow-ambient border border-outline-variant/20 p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="font-headline-sm text-[20px] font-medium text-primary">Top Performing Items</h2>
+                            <button class="text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center gap-4 group cursor-pointer">
+                                <div class="w-12 h-16 bg-surface-variant overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Truffle risotto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYYtWuCNVlnfTEtKJPjy1bhNfFuYepjAz4p6_4o5JhIqL5-XItB40yLBkbD-8NQntBmMqGtTsApija95zF2Jh6C8PbCyd-PrG12_riDEJLciNmeQzkIl04nO84cBvU0771ogY8ohjvM80itgubBAHMpXq7f7L-VGBiZrDGlwzaPdYsudjpY_urNokU34DdnKy4PPwcc9bHrrSVZrl_dRH9V3ZsVty9z_0SeJMRG3cFtbNKQHNl6Ndb"/>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-body-md text-sm font-semibold text-primary">Truffle Masterclass</h4>
+                                    <p class="font-label-caps text-[10px] text-on-surface-variant mt-1">Course \ 420 Sales</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-body-md text-sm font-medium text-primary">$125.5K</span>
+                                </div>
+                            </div>
+                            <div class="w-full h-px bg-outline-variant/20"></div>
+                            <div class="flex items-center gap-4 group cursor-pointer">
+                                <div class="w-12 h-16 bg-surface-variant overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Knife set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKQvr-kCnTUWMZzuwPM2L98WzWAw8rm_esBG34IP1CvVKHVlFz0yZfVX9AGX-2i0hGvFyL8l_a4XbupMkP5afhormjxwdipwdZHTkeYvBQNUG1fITupa9lg0MHTjNhpBR2d4hPZnTFnmrWRmTLnLu0e3-kcJwov1gVoPOF5DYhS-z__eOJOsG2bXiJAaZMshelPA9uiU8N5xgwgHylyX23NiyLbjvqxroGAi4eHabRIfJ0Kow36jkH"/>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-body-md text-sm font-semibold text-primary">Signature Knife Set</h4>
+                                    <p class="font-label-caps text-[10px] text-on-surface-variant mt-1">Physical \ 185 Sales</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-body-md text-sm font-medium text-primary">$83.2K</span>
+                                </div>
+                            </div>
+                            <div class="w-full h-px bg-outline-variant/20"></div>
+                            <div class="flex items-center gap-4 group cursor-pointer">
+                                <div class="w-12 h-16 bg-surface-variant overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="E-book cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqY26F-Ad-qHZvq83MrDLUe6MdNFRdZFyYvZZ5n7eFZ0u9_v3Il4nFySN562nUjCj9cvylaHbatqGfqZ612L2XB8cxSujDpI2DWmXBpmMkHINI8xmimskKrtI0IDgL-V43VxPAazGFmnQlj7yhs-3yDWhvgsrEjxVnoh_I7ki-c6ptfpD_TYOmf2q9TUpKkYDPCp7X7wRkJOJS1Gn9E46kRjqW-vDV3jDELdO5GuK9G0YH3e-1fwo6"/>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-body-md text-sm font-semibold text-primary">Exclusive E-Book</h4>
+                                    <p class="font-label-caps text-[10px] text-on-surface-variant mt-1">Digital \ 890 Sales</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-body-md text-sm font-medium text-primary">$43.6K</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Pulse Card -->
+                    <div class="bg-surface-container-lowest shadow-ambient border border-outline-variant/20 p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <h2 class="font-headline-sm text-[20px] font-medium text-primary">Revenue Pulse</h2>
+                            <p class="font-body-md text-xs text-on-surface-variant mt-1">Last 7 Days vs Previous</p>
+                        </div>
+                        <div class="flex-1 flex items-end gap-2 h-32 mt-4 relative border-b border-outline-variant/30 pb-1">
+                            <div class="absolute w-full h-px bg-outline-variant/10 bottom-[25%]"></div>
+                            <div class="absolute w-full h-px bg-outline-variant/10 bottom-[50%]"></div>
+                            <div class="absolute w-full h-px bg-outline-variant/10 bottom-[75%]"></div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[40%] transition-all"></div>
+                                <div class="w-full max-w-[24px] bg-primary h-[60%] -mt-[40%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">M</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[30%] transition-all"></div>
+                                <div class="w-full max-w-[24px] bg-primary h-[45%] -mt-[30%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">T</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[50%] transition-all"></div>
+                                <div class="w-full max-w-[24px] bg-primary h-[85%] -mt-[50%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">W</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[60%] transition-all"></div>
+                                <div class="w-full max-w-[24px] bg-secondary h-[40%] -mt-[60%] transition-all" title="Current Day"></div>
+                                <span class="text-[9px] mt-2 font-bold text-secondary">T</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[70%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">F</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[90%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">S</span>
+                            </div>
+                            <div class="flex-1 flex flex-col justify-end items-center group relative z-10">
+                                <div class="w-full max-w-[24px] bg-outline-variant/30 h-[40%] transition-all"></div>
+                                <span class="text-[9px] mt-2 text-on-surface-variant">S</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-primary"></span> This Week
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-outline-variant/30"></span> Last Week
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="mt-20 py-8 border-t border-outline-variant/20 text-center font-label-caps text-label-caps text-on-surface-variant">
+                © 2024 Chef Irfan Malik. Admin Dashboard.
+            </footer>
+        </div>
+    </main>
+</body>
+</html>
