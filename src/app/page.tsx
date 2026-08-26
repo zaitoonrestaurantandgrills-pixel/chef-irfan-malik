@@ -3,12 +3,14 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
-import RecipeCard from '@/components/RecipeCard';
-import { Award, Star, Clock, Trophy, ArrowRight, CheckCircle, ChefHat, BookOpen, ShieldCheck } from 'lucide-react';
+import {
+  Utensils, ArrowRight, CheckCircle2, ShieldCheck,
+  Clock, BarChart2, Star, Lock, Award, Users, ChevronRight
+} from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Chef Irfan Malik — Crafting Flavors. Sharing Knowledge.',
-  description: 'Discover professional recipes, culinary techniques and carefully crafted dishes by Executive Chef Irfan Malik. Premium Pakistani and international gastronomy.',
+  title: 'Chef Irfan Malik - Master the Recipes Behind Exceptional Flavor',
+  description: 'Discover carefully crafted recipes, professional techniques and chef-tested methods from Executive Chef Irfan Malik — Karachi\'s culinary authority.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -16,909 +18,726 @@ export const dynamic = 'force-dynamic';
 async function getFeaturedRecipes() {
   try {
     const featured = await prisma.recipe.findMany({
-      where: { status: 'PUBLISHED', featured: true },
-      include: { category: true },
-      take: 6,
-      orderBy: { createdAt: 'desc' },
-    });
-    if (featured.length > 0) return featured;
-    return await prisma.recipe.findMany({
       where: { status: 'PUBLISHED' },
       include: { category: true },
       take: 6,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { featured: 'desc' },
     });
-  } catch { return []; }
-}
-
-async function getTestimonials() {
-  try {
-    return await prisma.testimonial.findMany({
-      where: { status: 'PUBLISHED' },
-      take: 3,
-      orderBy: { createdAt: 'desc' },
-    });
-  } catch { return []; }
-}
-
-async function getStats() {
-  try {
-    const [recipeCount, premiumCount, achievementCount] = await Promise.all([
-      prisma.recipe.count({ where: { status: 'PUBLISHED' } }),
-      prisma.recipe.count({ where: { status: 'PUBLISHED', type: 'PREMIUM' } }),
-      prisma.achievement.count(),
-    ]);
-    return { recipeCount, premiumCount, achievementCount };
+    return featured;
   } catch {
-    return { recipeCount: 0, premiumCount: 0, achievementCount: 0 };
+    return [];
   }
 }
 
 async function getSiteSettings() {
   try {
     return await prisma.siteSettings.findUnique({ where: { id: 'singleton' } });
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 
 export default async function HomePage() {
-  const [featuredRecipes, testimonials, settings, stats] = await Promise.all([
+  const [recipes, settings] = await Promise.all([
     getFeaturedRecipes(),
-    getTestimonials(),
     getSiteSettings(),
-    getStats(),
   ]);
 
-  const heroImage = settings?.heroImage || '/uploads/gallery/cap-food-safety-award-stage-2026.jpg';
-  const profileImage = settings?.profileImage || '/uploads/gallery/chef-irfan-malik-award-presentation-vip.jpg';
+  const heroImage = settings?.heroImage || '/uploads/gallery/chef-irfan-malik-award-presentation-vip.jpg';
+  const profileImage = settings?.profileImage || '/uploads/gallery/cap-food-safety-award-stage-2026.jpg';
+
+  const biryaniRecipe = recipes.find((r) => r.slug.includes('biryani')) || recipes[0];
+  const daalRecipe = recipes.find((r) => r.slug.includes('daal')) || recipes[1] || recipes[0];
+  const karahiRecipe = recipes.find((r) => r.slug.includes('karahi')) || recipes[2] || recipes[0];
 
   return (
     <>
       <Navbar />
 
       <main>
-
         {/* ── HERO SECTION ─────────────────────────────────────────── */}
         <section
           style={{
             position: 'relative',
-            minHeight: '92vh',
+            minHeight: '82vh',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            padding: '5rem 1.5rem',
+            backgroundColor: '#ffffff',
             overflow: 'hidden',
-            backgroundColor: '#0f0e0c',
           }}
         >
-          {/* Background Image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={heroImage}
-            alt="Chef Irfan Malik"
+          <div
             style={{
-              position: 'absolute',
-              inset: 0,
+              maxWidth: '1200px',
+              margin: '0 auto',
               width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              opacity: 0.5,
-            }}
-          />
-
-          {/* Dark Gradient Overlay */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(105deg, rgba(15,14,12,0.85) 0%, rgba(15,14,12,0.55) 55%, rgba(15,14,12,0.25) 100%)',
-            }}
-          />
-
-          {/* Hero Content */}
-          <div
-            className="container"
-            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '3rem',
+              alignItems: 'center',
               position: 'relative',
-              zIndex: 2,
-              paddingTop: '5rem',
-              paddingBottom: '5rem',
-              maxWidth: '780px',
+              zIndex: 10,
             }}
           >
-            {/* Eyebrow */}
-            <div
-              className="font-label-caps"
-              style={{
-                color: 'var(--color-tertiary-fixed-dim)',
-                marginBottom: '1.5rem',
-                letterSpacing: '0.2em',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.35rem 0.875rem',
-                border: '1px solid rgba(233,193,118,0.3)',
-                borderRadius: 'var(--radius-full)',
-              }}
-            >
-              <Trophy size={12} />
-              17th CAP Food Safety &amp; Quality Award Winner
-            </div>
-
-            {/* Headline */}
-            <h1
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.1,
-                letterSpacing: '-0.02em',
-                marginBottom: '1.5rem',
-              }}
-            >
-              Master the Recipes
-              <br />
-              <span style={{ color: 'var(--color-tertiary-fixed-dim)' }}>Behind Exceptional</span>
-              <br />
-              Flavor.
-            </h1>
-
-            {/* Sub-headline */}
-            <p
-              className="font-body-lg"
-              style={{
-                color: 'rgba(255,255,255,0.75)',
-                marginBottom: '2.5rem',
-                maxWidth: '520px',
-                lineHeight: 1.7,
-              }}
-            >
-              Discover carefully crafted recipes, professional techniques and chef-tested methods from Executive Chef Irfan Malik — Karachi&apos;s culinary authority.
-            </p>
-
-            {/* CTAs */}
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <Link
-                href="/recipes"
-                className="btn btn-lg"
+            {/* Left Narrative Column */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div
+                className="font-label-caps"
                 style={{
-                  background: 'var(--color-secondary)',
-                  color: '#ffffff',
-                  border: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
+                  backgroundColor: 'var(--color-primary-fixed)',
+                  color: 'var(--color-primary)',
+                  padding: '0.35rem 0.85rem',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '11px',
+                  width: 'fit-content',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
                 }}
               >
-                Explore Premium Recipes
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/about"
-                className="btn btn-lg"
+                <Utensils size={13} color="var(--color-primary)" />
+                17th CAP Food Safety &amp; Quality Award Winner
+              </div>
+
+              <h1
                 style={{
-                  background: 'transparent',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255,255,255,0.35)',
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: 'clamp(2.5rem, 5vw, 3.75rem)',
+                  fontWeight: 700,
+                  color: 'var(--color-text)',
+                  lineHeight: 1.15,
+                  margin: 0,
+                  letterSpacing: '-0.02em',
                 }}
               >
-                Meet Chef Irfan
-              </Link>
+                Master the Recipes <br />
+                Behind <span style={{ color: 'var(--color-primary)', fontStyle: 'italic' }}>Exceptional Flavor.</span>
+              </h1>
+
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '1.1rem',
+                  lineHeight: 1.6,
+                  color: 'var(--color-secondary)',
+                  margin: 0,
+                  maxWidth: '540px',
+                }}
+              >
+                Discover carefully crafted recipes, professional techniques and chef-tested methods from Executive Chef Irfan Malik — Karachi&apos;s culinary authority.
+              </p>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '0.5rem' }}>
+                <Link
+                  href="/recipes"
+                  style={{
+                    backgroundColor: 'var(--color-primary)',
+                    color: '#ffffff',
+                    padding: '0.9rem 2rem',
+                    borderRadius: 'var(--radius-full)',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    boxShadow: '0 4px 14px rgba(187, 1, 13, 0.3)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                  }}
+                >
+                  Explore Premium Recipes
+                  <ArrowRight size={16} />
+                </Link>
+
+                <Link
+                  href="/about"
+                  style={{
+                    backgroundColor: '#ffffff',
+                    border: '2px solid var(--color-primary)',
+                    color: 'var(--color-primary)',
+                    padding: '0.85rem 1.85rem',
+                    borderRadius: 'var(--radius-full)',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  Meet Chef Irfan
+                </Link>
+              </div>
+
+              {/* Stats Strip */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '1rem',
+                  marginTop: '1.5rem',
+                  paddingTop: '1.5rem',
+                  borderTop: '1px solid var(--color-border-subtle)',
+                }}
+              >
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>15+</div>
+                  <div className="font-label-caps" style={{ fontSize: '10px', color: 'var(--color-secondary)' }}>Years of Mastery</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>4+</div>
+                  <div className="font-label-caps" style={{ fontSize: '10px', color: 'var(--color-secondary)' }}>Signature Recipes</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>2+</div>
+                  <div className="font-label-caps" style={{ fontSize: '10px', color: 'var(--color-secondary)' }}>Masterclasses</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>4+</div>
+                  <div className="font-label-caps" style={{ fontSize: '10px', color: 'var(--color-secondary)' }}>Awards</div>
+                </div>
+              </div>
             </div>
 
-            {/* Trust Strip */}
+            {/* Right Editorial Portrait Column */}
             <div
               style={{
-                display: 'flex',
-                gap: '2rem',
-                marginTop: '3.5rem',
-                flexWrap: 'wrap',
+                position: 'relative',
+                height: '560px',
+                width: '100%',
+                borderRadius: '1.25rem',
+                overflow: 'hidden',
+                boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                backgroundColor: 'var(--color-surface-low)',
               }}
             >
-              {[
-                { icon: '🏆', label: 'Award Winner' },
-                { icon: '👨‍🍳', label: '15+ Yrs Experience' },
-                { icon: '📖', label: `${stats.recipeCount > 0 ? stats.recipeCount + '+' : '100+'} Recipes` },
-              ].map(({ icon, label }) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '1.1rem' }}>{icon}</span>
-                  <span
-                    className="font-label-caps"
-                    style={{ color: 'rgba(255,255,255,0.65)', fontSize: '11px' }}
-                  >
-                    {label}
-                  </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={heroImage}
+                alt="Executive Chef Irfan Malik"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'top center',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 40%, transparent 100%)',
+                }}
+              />
+
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '1.5rem',
+                  left: '1.5rem',
+                  right: '1.5rem',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <div>
+                  <p className="font-label-caps" style={{ color: '#ffffff', opacity: 0.9, fontSize: '11px', margin: '0 0 0.25rem' }}>
+                    Executive Chef
+                  </p>
+                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', color: '#ffffff', margin: 0, fontWeight: 700 }}>
+                    Irfan Malik
+                  </h3>
                 </div>
-              ))}
+
+                <div
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                    backdropFilter: 'blur(8px)',
+                    borderRadius: '50%',
+                    padding: '0.65rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  <ShieldCheck size={22} color="var(--color-primary)" />
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ── STATS STRIP ───────────────────────────────────────────── */}
+        {/* ── SIGNATURE RECIPES BENTO GRID ──────────────────────────── */}
         <section
           style={{
-            backgroundColor: 'var(--color-primary)',
-            padding: '2.25rem 0',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
-          }}
-        >
-          <div className="container">
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-                gap: '2rem',
-                textAlign: 'center',
-              }}
-            >
-              {[
-                { value: '15+', label: 'Years of Mastery' },
-                { value: stats.recipeCount > 0 ? `${stats.recipeCount}+` : '50+', label: 'Signature Recipes' },
-                { value: stats.premiumCount > 0 ? `${stats.premiumCount}+` : '30+', label: 'Premium Masterclasses' },
-                { value: stats.achievementCount > 0 ? `${stats.achievementCount}+` : '10+', label: 'Honors & Awards' },
-              ].map(({ value, label }) => (
-                <div key={label}>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
-                      fontWeight: 700,
-                      color: 'var(--color-tertiary-fixed-dim)',
-                      lineHeight: 1,
-                      marginBottom: '0.375rem',
-                    }}
-                  >
-                    {value}
-                  </div>
-                  <div
-                    className="font-label-caps"
-                    style={{ color: 'rgba(255,255,255,0.55)', fontSize: '10px' }}
-                  >
-                    {label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURED RECIPES ─────────────────────────────────────── */}
-        <section
-          style={{
-            padding: '5rem 0',
+            padding: '5rem 1.5rem',
             backgroundColor: 'var(--color-bg)',
           }}
         >
-          <div className="container">
-            {/* Section Header */}
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            {/* Header */}
             <div
               style={{
                 display: 'flex',
+                flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'flex-end',
                 marginBottom: '3rem',
-                paddingBottom: '1.25rem',
-                borderBottom: '1px solid var(--color-border)',
+                flexWrap: 'wrap',
+                gap: '1rem',
               }}
             >
               <div>
                 <span
                   className="font-label-caps"
-                  style={{ color: 'var(--color-secondary)', display: 'block', marginBottom: '0.4rem' }}
+                  style={{
+                    color: 'var(--color-primary)',
+                    display: 'block',
+                    marginBottom: '0.35rem',
+                    letterSpacing: '0.12em',
+                  }}
                 >
                   Curated Selection
                 </span>
                 <h2
-                  className="font-headline-lg"
-                  style={{ color: 'var(--color-primary)', margin: 0 }}
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    color: 'var(--color-text)',
+                    margin: 0,
+                  }}
                 >
                   Signature Recipes
                 </h2>
               </div>
+
               <Link
                 href="/recipes"
                 className="font-label-caps"
                 style={{
+                  color: 'var(--color-primary)',
+                  fontWeight: 700,
+                  textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.35rem',
+                  fontSize: '13px',
+                }}
+              >
+                View All Marketplace Recipes
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            {/* Bento Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '2rem',
+              }}
+            >
+              {/* Card 1: Biryani / Main Masterclass */}
+              {biryaniRecipe && (
+                <div
+                  style={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: '1rem',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'transform 0.2s ease',
+                  }}
+                >
+                  <div style={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={biryaniRecipe.coverImage || '/uploads/gallery/chef-irfan-malik-award-presentation-vip.jpg'}
+                      alt={biryaniRecipe.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', top: '1rem', left: '1rem', display: 'flex', gap: '0.5rem' }}>
+                      <span
+                        className="font-label-caps"
+                        style={{
+                          backgroundColor: 'var(--color-tertiary-container)',
+                          color: '#ffffff',
+                          fontSize: '10px',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontWeight: 700,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}
+                      >
+                        <Star size={11} /> PREMIUM
+                      </span>
+                      <span
+                        className="font-label-caps"
+                        style={{
+                          backgroundColor: 'rgba(255,255,255,0.92)',
+                          color: 'var(--color-primary)',
+                          fontSize: '10px',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        PKR {biryaniRecipe.price || 499}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      <span className="font-label-caps" style={{ color: 'var(--color-primary)', fontSize: '11px', display: 'block', marginBottom: '0.35rem' }}>
+                        {biryaniRecipe.cuisine || 'Pakistani / Mughlai'}
+                      </span>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                        {biryaniRecipe.title}
+                      </h3>
+                      <p style={{ color: 'var(--color-secondary)', fontSize: '14px', lineHeight: 1.5, margin: '0 0 1.25rem' }}>
+                        {biryaniRecipe.description}
+                      </p>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--color-border-subtle)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '1rem', color: 'var(--color-secondary)', fontSize: '12px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Clock size={14} /> {biryaniRecipe.cookingTime || 120} min</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><BarChart2 size={14} /> {biryaniRecipe.difficulty}</span>
+                      </div>
+                      <Link
+                        href={`/recipes/${biryaniRecipe.slug}`}
+                        style={{
+                          color: 'var(--color-primary)',
+                          fontWeight: 700,
+                          fontSize: '13px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}
+                      >
+                        Unlock Recipe <Lock size={13} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Card 2: Daal Makhani */}
+              {daalRecipe && (
+                <div
+                  style={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: '1rem',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <div style={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={daalRecipe.coverImage || '/uploads/gallery/cap-food-safety-award-stage-2026.jpg'}
+                      alt={daalRecipe.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', top: '1rem', left: '1rem', display: 'flex', gap: '0.5rem' }}>
+                      <span
+                        className="font-label-caps"
+                        style={{
+                          backgroundColor: 'var(--color-tertiary-container)',
+                          color: '#ffffff',
+                          fontSize: '10px',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        PREMIUM
+                      </span>
+                      <span
+                        className="font-label-caps"
+                        style={{
+                          backgroundColor: 'rgba(255,255,255,0.92)',
+                          color: 'var(--color-primary)',
+                          fontSize: '10px',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        PKR {daalRecipe.price || 349}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      <span className="font-label-caps" style={{ color: 'var(--color-primary)', fontSize: '11px', display: 'block', marginBottom: '0.35rem' }}>
+                        {daalRecipe.cuisine || 'Pakistani / Indian'}
+                      </span>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                        {daalRecipe.title}
+                      </h3>
+                      <p style={{ color: 'var(--color-secondary)', fontSize: '14px', lineHeight: 1.5, margin: '0 0 1.25rem' }}>
+                        {daalRecipe.description}
+                      </p>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--color-border-subtle)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '1rem', color: 'var(--color-secondary)', fontSize: '12px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Clock size={14} /> {daalRecipe.cookingTime || 140} min</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><BarChart2 size={14} /> {daalRecipe.difficulty}</span>
+                      </div>
+                      <Link
+                        href={`/recipes/${daalRecipe.slug}`}
+                        style={{
+                          color: 'var(--color-primary)',
+                          fontWeight: 700,
+                          fontSize: '13px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}
+                      >
+                        Unlock Recipe <Lock size={13} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Card 3: Chicken Karahi (Free) */}
+              {karahiRecipe && (
+                <div
+                  style={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: '1rem',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <div style={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={karahiRecipe.coverImage || '/uploads/gallery/master-chefs-sindh-food-authority-2026.jpg'}
+                      alt={karahiRecipe.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', top: '1rem', left: '1rem' }}>
+                      <span
+                        className="font-label-caps"
+                        style={{
+                          backgroundColor: 'var(--color-success)',
+                          color: '#ffffff',
+                          fontSize: '10px',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        FREE
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      <span className="font-label-caps" style={{ color: 'var(--color-primary)', fontSize: '11px', display: 'block', marginBottom: '0.35rem' }}>
+                        {karahiRecipe.cuisine || 'Pakistani'}
+                      </span>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                        {karahiRecipe.title}
+                      </h3>
+                      <p style={{ color: 'var(--color-secondary)', fontSize: '14px', lineHeight: 1.5, margin: '0 0 1.25rem' }}>
+                        {karahiRecipe.description}
+                      </p>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--color-border-subtle)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '1rem', color: 'var(--color-secondary)', fontSize: '12px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Clock size={14} /> {karahiRecipe.cookingTime || 60} min</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><BarChart2 size={14} /> {karahiRecipe.difficulty}</span>
+                      </div>
+                      <Link
+                        href={`/recipes/${karahiRecipe.slug}`}
+                        style={{
+                          color: 'var(--color-primary)',
+                          fontWeight: 700,
+                          fontSize: '13px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}
+                      >
+                        View Recipe <ArrowRight size={13} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CHEF BIO SECTION (ASYMMETRIC LAYOUT) ───────────────────── */}
+        <section
+          style={{
+            padding: '5rem 1.5rem',
+            backgroundColor: '#ffffff',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '1200px',
+              margin: '0 auto',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '3.5rem',
+              alignItems: 'center',
+            }}
+          >
+            {/* Portrait Column */}
+            <div style={{ position: 'relative', maxWidth: '440px', margin: '0 auto', width: '100%' }}>
+              <div
+                style={{
+                  aspectRatio: '4/5',
+                  borderRadius: '1.5rem',
+                  overflow: 'hidden',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={profileImage}
+                  alt="Executive Chef Irfan Malik"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+
+              {/* Floating Badge */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '-1.5rem',
+                  right: '-1.5rem',
+                  backgroundColor: '#ffffff',
+                  padding: '1.25rem 1.5rem',
+                  borderRadius: '1rem',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+                  border: '1px solid var(--color-border-subtle)',
+                  maxWidth: '220px',
+                }}
+              >
+                <Award size={26} color="var(--color-tertiary-container)" style={{ marginBottom: '0.35rem' }} />
+                <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--color-text)' }}>Sindh Food Authority</div>
+                <div style={{ fontSize: '11px', color: 'var(--color-secondary)', marginTop: '0.15rem' }}>Certified Excellence</div>
+              </div>
+            </div>
+
+            {/* Narrative Column */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <span
+                className="font-label-caps"
+                style={{
                   color: 'var(--color-primary)',
-                  borderBottom: '1px solid var(--color-tertiary-fixed-dim)',
-                  paddingBottom: '2px',
-                  textDecoration: 'none',
+                  letterSpacing: '0.12em',
                   fontSize: '11px',
                 }}
               >
-                View All <ArrowRight size={13} />
-              </Link>
-            </div>
-
-            {featuredRecipes.length > 0 ? (
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: '1.75rem',
-                }}
-              >
-                {featuredRecipes.map((recipe) => (
-                  <RecipeCard key={recipe.id} recipe={recipe} />
-                ))}
-              </div>
-            ) : (
-              <div
-                style={{
-                  textAlign: 'center',
-                  padding: '5rem 2rem',
-                  backgroundColor: '#ffffff',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🍽️</div>
-                <h3
-                  className="font-headline-sm"
-                  style={{ color: 'var(--color-primary)', marginBottom: '0.5rem' }}
-                >
-                  Recipes Coming Soon
-                </h3>
-                <p className="font-body-md" style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
-                  Chef Irfan is crafting the first batch of premium recipes.
-                </p>
-                <Link href="/recipes" className="btn btn-primary">
-                  Browse Marketplace
-                </Link>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ── WHAT YOU'LL GET (Purchase Motivation) ─────────────────── */}
-        <section
-          style={{
-            padding: '5rem 0',
-            backgroundColor: '#ffffff',
-            borderTop: '1px solid var(--color-border-variant)',
-            borderBottom: '1px solid var(--color-border-variant)',
-          }}
-        >
-          <div className="container">
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: '4rem',
-                alignItems: 'center',
-              }}
-            >
-              {/* Left: Text */}
-              <div>
-                <span
-                  className="font-label-caps"
-                  style={{ color: 'var(--color-secondary)', display: 'block', marginBottom: '0.75rem' }}
-                >
-                  Premium Recipe Access
-                </span>
-                <h2
-                  className="font-headline-lg"
-                  style={{ color: 'var(--color-primary)', marginBottom: '1.5rem' }}
-                >
-                  Unlock the Complete
-                  <br />
-                  Chef Experience
-                </h2>
-                <p
-                  className="font-body-lg"
-                  style={{ color: 'var(--color-text-muted)', lineHeight: 1.75, marginBottom: '2rem' }}
-                >
-                  Every premium recipe gives you direct access to professional-grade knowledge — the same techniques used in Michelin-standard kitchens.
-                </p>
-
-                <ul
-                  style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: '0 0 2.5rem 0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.875rem',
-                  }}
-                >
-                  {[
-                    'Complete ingredient quantities & ratios',
-                    'Step-by-step professional instructions',
-                    "Chef Irfan's secret techniques",
-                    'Timing & temperature guidance',
-                    'Serving suggestions & plating tips',
-                    "Chef's personal notes & variations",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="font-body-md"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
-                        color: 'var(--color-text)',
-                      }}
-                    >
-                      <CheckCircle
-                        size={17}
-                        style={{ color: 'var(--color-secondary)', flexShrink: 0 }}
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/recipes"
-                  className="btn btn-primary btn-lg"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-                >
-                  Explore Signature Recipes
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-
-              {/* Right: Premium Visual Card */}
-              <div>
-                <div
-                  style={{
-                    background: 'linear-gradient(145deg, #1b1c1a 0%, #2c2a26 100%)',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '2.5rem',
-                    color: '#ffffff',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      background: 'rgba(233,193,118,0.15)',
-                      border: '1px solid rgba(233,193,118,0.3)',
-                      borderRadius: 'var(--radius-full)',
-                      padding: '0.3rem 0.875rem',
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    <span style={{ fontSize: '10px', color: 'var(--color-tertiary-fixed-dim)' }}>✦</span>
-                    <span
-                      className="font-label-caps"
-                      style={{ color: 'var(--color-tertiary-fixed-dim)', fontSize: '10px' }}
-                    >
-                      Premium Recipe
-                    </span>
-                  </div>
-
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: '1.6rem',
-                      fontWeight: 700,
-                      marginBottom: '0.5rem',
-                    }}
-                  >
-                    Chicken Karahi
-                  </div>
-                  <div
-                    className="font-label-caps"
-                    style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', marginBottom: '1.5rem' }}
-                  >
-                    Authentic Pakistani Cuisine · Intermediate · 45 min
-                  </div>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid rgba(255,255,255,0.1)',
-                      paddingTop: '1.5rem',
-                      marginBottom: '1.5rem',
-                    }}
-                  >
-                    {[
-                      'Full ingredient list with exact quantities',
-                      '12 professional cooking steps',
-                      "Chef's secret spice blend technique",
-                    ].map((item) => (
-                      <div
-                        key={item}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.625rem',
-                          marginBottom: '0.75rem',
-                        }}
-                      >
-                        <CheckCircle size={15} style={{ color: 'var(--color-tertiary-fixed-dim)', flexShrink: 0 }} />
-                        <span
-                          className="font-body-md"
-                          style={{ color: 'rgba(255,255,255,0.75)', fontSize: '14px' }}
-                        >
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      borderTop: '1px solid rgba(255,255,255,0.1)',
-                      paddingTop: '1.25rem',
-                    }}
-                  >
-                    <div>
-                      <div
-                        className="font-label-caps"
-                        style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px' }}
-                      >
-                        One-time unlock
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-heading)',
-                          fontSize: '1.75rem',
-                          fontWeight: 700,
-                          color: 'var(--color-tertiary-fixed-dim)',
-                        }}
-                      >
-                        PKR 499
-                      </div>
-                    </div>
-                    <Link
-                      href="/recipes"
-                      className="btn"
-                      style={{
-                        background: 'var(--color-secondary)',
-                        color: '#ffffff',
-                        border: 'none',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.4rem',
-                      }}
-                    >
-                      Unlock Recipe →
-                    </Link>
-                  </div>
-
-                  <div
-                    className="font-label-caps"
-                    style={{
-                      textAlign: 'center',
-                      color: 'rgba(255,255,255,0.3)',
-                      fontSize: '10px',
-                      marginTop: '1.25rem',
-                    }}
-                  >
-                    🔒 Secure checkout · Instant access after payment
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── ABOUT CHEF IRFAN ─────────────────────────────────────── */}
-        <section style={{ padding: '5.5rem 0', backgroundColor: 'var(--color-bg)' }}>
-          <div className="container">
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: '4rem',
-                alignItems: 'center',
-              }}
-            >
-              {/* Photo */}
-              <div style={{ maxWidth: '460px', margin: '0 auto', width: '100%' }}>
-                <div
-                  style={{
-                    position: 'relative',
-                    aspectRatio: '4/5',
-                    borderRadius: 'var(--radius-lg)',
-                    overflow: 'hidden',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
-                    border: '1px solid var(--color-border)',
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={profileImage}
-                    alt="Executive Chef Irfan Malik"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                  {/* Award badge overlay */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '1.25rem',
-                      left: '1.25rem',
-                      right: '1.25rem',
-                      background: 'rgba(0,0,0,0.8)',
-                      backdropFilter: 'blur(8px)',
-                      borderRadius: 'var(--radius-md)',
-                      padding: '0.875rem 1.125rem',
-                      border: '1px solid rgba(233,193,118,0.25)',
-                    }}
-                  >
-                    <div
-                      className="font-label-caps"
-                      style={{ color: 'var(--color-tertiary-fixed-dim)', fontSize: '9px', marginBottom: '0.25rem' }}
-                    >
-                      🏆 National Recognition
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-heading)',
-                        color: '#ffffff',
-                        fontSize: '0.875rem',
-                        fontWeight: 600,
-                      }}
-                    >
-                      17th Consumers Food Safety & Quality Award
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Text */}
-              <div>
-                <span
-                  className="font-label-caps"
-                  style={{ color: 'var(--color-secondary)', display: 'block', marginBottom: '0.75rem' }}
-                >
-                  The Chef Behind the Craft
-                </span>
-                <h2
-                  className="font-headline-lg"
-                  style={{ color: 'var(--color-primary)', marginBottom: '1.5rem' }}
-                >
-                  Learn From a
-                  <br />
-                  Professional Chef
-                </h2>
-                <p
-                  className="font-body-lg"
-                  style={{ color: 'var(--color-text-muted)', lineHeight: 1.8, marginBottom: '2rem' }}
-                >
-                  {settings?.biography ||
-                    'Executive Chef Irfan Malik brings years of dedication at Zaitoon Restaurant and prominent culinary institutions. Honored for exemplary food safety and gastronomic craftsmanship, his recipes blend traditional Pakistani heritage with contemporary techniques.'}
-                </p>
-
-                {/* Trust Badges */}
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '1.25rem',
-                    padding: '1.75rem 0',
-                    borderTop: '1px solid var(--color-border)',
-                    marginBottom: '2rem',
-                  }}
-                >
-                  {[
-                    { icon: <ChefHat size={20} />, value: '15+', label: 'Years Experience' },
-                    { icon: <BookOpen size={20} />, value: stats.recipeCount > 0 ? `${stats.recipeCount}+` : '50+', label: 'Recipes' },
-                    { icon: <Award size={20} />, value: stats.achievementCount > 0 ? `${stats.achievementCount}+` : '10+', label: 'Awards' },
-                  ].map(({ icon, value, label }) => (
-                    <div key={label} style={{ textAlign: 'center' }}>
-                      <div style={{ color: 'var(--color-secondary)', marginBottom: '0.375rem', display: 'flex', justifyContent: 'center' }}>
-                        {icon}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: 'var(--font-heading)',
-                          fontSize: '1.75rem',
-                          fontWeight: 700,
-                          color: 'var(--color-primary)',
-                          lineHeight: 1,
-                        }}
-                      >
-                        {value}
-                      </div>
-                      <div
-                        className="font-label-caps"
-                        style={{ color: 'var(--color-text-subtle)', fontSize: '10px', marginTop: '0.25rem' }}
-                      >
-                        {label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <Link
-                  href="/about"
-                  className="btn btn-secondary btn-lg"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-                >
-                  Discover Chef Irfan&apos;s Journey
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
-        {testimonials.length > 0 && (
-          <section
-            style={{
-              padding: '5rem 0',
-              backgroundColor: '#ffffff',
-              borderTop: '1px solid var(--color-border-variant)',
-            }}
-          >
-            <div className="container">
-              <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-                <span
-                  className="font-label-caps"
-                  style={{ color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem' }}
-                >
-                  Social Proof
-                </span>
-                <h2
-                  className="font-headline-lg"
-                  style={{ color: 'var(--color-primary)', margin: 0 }}
-                >
-                  Loved by Home Cooks
-                  <br />
-                  &amp; Food Enthusiasts
-                </h2>
-              </div>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                  gap: '1.75rem',
-                }}
-              >
-                {testimonials.map((t) => (
-                  <div
-                    key={t.id}
-                    style={{
-                      padding: '2rem',
-                      backgroundColor: 'var(--color-bg)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: 'var(--radius-lg)',
-                      boxShadow: 'var(--shadow-ambient)',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: '0.2rem',
-                        marginBottom: '1.25rem',
-                        color: 'var(--color-tertiary-fixed-dim)',
-                      }}
-                    >
-                      {[...Array(t.rating || 5)].map((_, i) => (
-                        <Star key={i} size={15} fill="var(--color-tertiary-fixed-dim)" />
-                      ))}
-                    </div>
-                    <p
-                      className="font-body-md"
-                      style={{
-                        color: 'var(--color-text-muted)',
-                        fontStyle: 'italic',
-                        marginBottom: '1.5rem',
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      &ldquo;{t.content}&rdquo;
-                    </p>
-                    <div
-                      className="font-label-caps"
-                      style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '11px' }}
-                    >
-                      {t.customerName}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ── FINAL CTA STRIP ──────────────────────────────────────── */}
-        <section
-          style={{
-            padding: '5rem 0',
-            background: 'linear-gradient(135deg, #1b1c1a 0%, #2c2a26 100%)',
-            color: '#ffffff',
-            textAlign: 'center',
-          }}
-        >
-          <div className="container" style={{ maxWidth: '680px' }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: 'rgba(233,193,118,0.12)',
-                border: '1px solid rgba(233,193,118,0.25)',
-                borderRadius: 'var(--radius-full)',
-                padding: '0.35rem 0.875rem',
-                marginBottom: '1.75rem',
-              }}
-            >
-              <ShieldCheck size={13} style={{ color: 'var(--color-tertiary-fixed-dim)' }} />
-              <span
-                className="font-label-caps"
-                style={{ color: 'var(--color-tertiary-fixed-dim)', fontSize: '10px' }}
-              >
-                Secure Checkout · Instant Access
+                The Chef Behind the Craft
               </span>
-            </div>
 
-            <h2
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.2,
-                margin: '0 0 1.25rem',
-              }}
-            >
-              Begin Your Culinary Journey
-              <br />
-              with Chef Irfan
-            </h2>
-
-            <p
-              className="font-body-lg"
-              style={{
-                color: 'rgba(255,255,255,0.65)',
-                lineHeight: 1.7,
-                marginBottom: '2.5rem',
-              }}
-            >
-              Access full ingredient breakdowns, precise timing guides, and exclusive technique notes to elevate your cooking.
-            </p>
-
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Link
-                href="/recipes"
-                className="btn btn-lg"
+              <h2
                 style={{
-                  background: 'var(--color-secondary)',
-                  color: '#ffffff',
-                  border: 'none',
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: 'clamp(2rem, 4vw, 2.75rem)',
+                  fontWeight: 700,
+                  color: 'var(--color-text)',
+                  lineHeight: 1.2,
+                  margin: 0,
+                }}
+              >
+                Learn From a Professional Chef
+              </h2>
+
+              <p style={{ color: 'var(--color-secondary)', fontSize: '1.05rem', lineHeight: 1.6, margin: 0 }}>
+                Executive Chef Irfan Malik is a celebrated culinary master at Zaitoon Restaurant and an esteemed figure in Pakistani gastronomy. Honored by the Consumers Association of Pakistan and Sindh Food Authority, Chef Irfan is dedicated to Michelin-standard food safety, heritage recipes, and culinary education.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
+                <div
+                  style={{
+                    backgroundColor: 'var(--color-surface-low)',
+                    padding: '1rem 1.25rem',
+                    borderRadius: 'var(--radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.85rem',
+                  }}
+                >
+                  <ShieldCheck size={24} color="var(--color-primary)" />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--color-text)' }}>Food Safety</div>
+                    <div style={{ fontSize: '11px', color: 'var(--color-secondary)' }}>Michelin-standard</div>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    backgroundColor: 'var(--color-surface-low)',
+                    padding: '1rem 1.25rem',
+                    borderRadius: 'var(--radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.85rem',
+                  }}
+                >
+                  <Utensils size={24} color="var(--color-primary)" />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--color-text)' }}>Heritage Recipes</div>
+                    <div style={{ fontSize: '11px', color: 'var(--color-secondary)' }}>Authentic techniques</div>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/about"
+                className="font-label-caps"
+                style={{
+                  color: 'var(--color-primary)',
+                  fontWeight: 700,
+                  textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
+                  gap: '0.4rem',
+                  fontSize: '13px',
+                  marginTop: '0.5rem',
                 }}
               >
-                Browse Marketplace
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/contact"
-                className="btn btn-lg"
-                style={{
-                  background: 'transparent',
-                  color: '#ffffff',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                }}
-              >
-                Book Private Masterclass
+                Discover Chef Irfan&apos;s Journey
+                <ArrowRight size={15} />
               </Link>
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />

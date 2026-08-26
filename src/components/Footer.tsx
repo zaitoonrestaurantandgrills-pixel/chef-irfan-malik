@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, MessageSquare, MapPin } from 'lucide-react';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,232 +9,153 @@ export default function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: '#1b1c1a',
         color: '#ffffff',
-        borderTop: '1px solid var(--color-border)',
-        padding: '5rem 0 3rem',
+        borderTop: '1px solid var(--color-border-subtle)',
+        padding: '5rem 1.5rem 3rem',
       }}
     >
-      <div className="container">
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: '3.5rem',
-            paddingBottom: '3.5rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-          }}
-          className="footer-top-row"
-        >
-          {/* Brand Col */}
-          <div style={{ maxWidth: '420px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/logo.png"
-                alt="Chef Irfan Malik Emblem"
-                style={{
-                  height: '64px',
-                  width: 'auto',
-                  objectFit: 'contain',
-                }}
-              />
-              <div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '1.6rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: '#ffffff',
-                    lineHeight: 1.1,
-                  }}
-                >
-                  Chef Irfan Malik
-                </div>
-                <div className="font-label-caps" style={{ color: 'var(--color-tertiary-fixed-dim)', fontSize: '10px', marginTop: '0.25rem' }}>
-                  Crafting Flavors. Sharing Knowledge.
-                </div>
-              </div>
-            </div>
-            <p
-              className="font-body-md"
-              style={{
-                color: 'rgba(255, 255, 255, 0.65)',
-                lineHeight: 1.7,
-                margin: 0,
-              }}
-            >
-              Mastering the art of traditional & contemporary gastronomy. Sharing Michelin-standard food safety, authentic techniques, and heritage recipes.
-            </p>
-          </div>
-
-          {/* Nav & Contact Columns */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '3rem',
-            }}
-          >
-            {/* Nav */}
-            <div>
-              <div
-                className="font-label-caps"
-                style={{ color: 'var(--color-tertiary-fixed-dim)', marginBottom: '1.25rem' }}
-              >
-                Explore
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <li>
-                  <Link href="/gallery" className="font-label-caps" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
-                    Portfolio Gallery
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/recipes" className="font-label-caps" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
-                    Recipe Marketplace
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="font-label-caps" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
-                    About Chef Irfan
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/achievements" className="font-label-caps" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
-                    Awards & Honors
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Direct Contact Info */}
-            <div>
-              <div
-                className="font-label-caps"
-                style={{ color: 'var(--color-tertiary-fixed-dim)', marginBottom: '1.25rem' }}
-              >
-                Contact & Inquiries
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                <li>
-                  <a
-                    href="tel:03009482504"
-                    className="font-label-caps"
-                    style={{
-                      color: '#ffffff',
-                      textDecoration: 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    <Phone size={14} color="var(--color-secondary-container)" />
-                    0300-9482504
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://wa.me/923009482504"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-label-caps"
-                    style={{
-                      color: 'var(--color-secondary-container)',
-                      textDecoration: 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                    }}
-                  >
-                    💬 WhatsApp Direct
-                  </a>
-                </li>
-                <li style={{ color: 'rgba(255,255,255,0.65)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <MapPin size={14} color="var(--color-tertiary-fixed-dim)" />
-                  Zaitoon Restaurant, Karachi
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Row: Copyright + Developer Branding */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-start',
+            gap: '3rem',
             flexWrap: 'wrap',
-            gap: '1.5rem',
-            paddingTop: '2.5rem',
+            paddingBottom: '3.5rem',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
-          {/* Copyright & Developer Branding */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-            <p
-              className="font-label-caps"
-              style={{ color: 'rgba(255, 255, 255, 0.65)', margin: 0, fontSize: '11px' }}
+          {/* Brand Col */}
+          <div style={{ maxWidth: '380px' }}>
+            <Link
+              href="/"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '1.65rem',
+                fontStyle: 'italic',
+                color: '#ffffff',
+                textDecoration: 'none',
+                display: 'inline-block',
+                marginBottom: '1rem',
+              }}
             >
-              © {year} Chef Irfan Malik. All Rights Reserved.
+              Irfan Malik
+            </Link>
+
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              Crafting Flavors. Sharing Knowledge. Mastering the art of traditional &amp; contemporary gastronomy.
             </p>
-            <p
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <a
+                href="tel:03009482504"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  textDecoration: 'none',
+                  fontSize: '13px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <Phone size={15} color="var(--color-tertiary-fixed-dim)" /> 0300-9482504
+              </a>
+
+              <a
+                href="https://wa.me/923009482504"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  textDecoration: 'none',
+                  fontSize: '13px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <MessageSquare size={15} color="var(--color-tertiary-fixed-dim)" /> WhatsApp Inquiries
+              </a>
+
+              <div
+                style={{
+                  color: 'rgba(255, 255, 255, 0.65)',
+                  fontSize: '13px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginTop: '0.25rem',
+                }}
+              >
+                <MapPin size={15} color="var(--color-tertiary-fixed-dim)" /> Zaitoon Restaurant, Karachi
+              </div>
+            </div>
+          </div>
+
+          {/* Explore Links */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <h4
               className="font-label-caps"
               style={{
                 color: 'var(--color-tertiary-fixed-dim)',
-                margin: 0,
-                fontSize: '11px',
-                letterSpacing: '0.12em',
+                fontSize: '12px',
+                letterSpacing: '0.1em',
+                marginBottom: '0.5rem',
+                fontWeight: 700,
               }}
             >
-              Designed & Developed by{' '}
-              <strong style={{ color: '#ffffff', fontWeight: 700 }}>A Wajid Shah</strong>
-            </p>
+              Explore
+            </h4>
+            <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Home</Link>
+            <Link href="/recipes" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Recipe Marketplace</Link>
+            <Link href="/about" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>About Chef Irfan</Link>
+            <Link href="/achievements" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Achievements &amp; Honors</Link>
+            <Link href="/gallery" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Culinary Gallery</Link>
           </div>
 
-          <div style={{ display: 'flex', gap: '1.75rem', flexWrap: 'wrap' }}>
-            <Link
-              href="/contact"
+          {/* Customer & Legal */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <h4
               className="font-label-caps"
-              style={{ color: 'rgba(255, 255, 255, 0.65)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
+              style={{
+                color: 'var(--color-tertiary-fixed-dim)',
+                fontSize: '12px',
+                letterSpacing: '0.1em',
+                marginBottom: '0.5rem',
+                fontWeight: 700,
+              }}
             >
-              Contact
+              Customer &amp; Legal
+            </h4>
+            <Link href="/login" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Sign In</Link>
+            <Link href="/dashboard" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>My Recipes</Link>
+            <Link href="/contact" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Contact &amp; Bookings</Link>
+            <Link href="/about" style={{ color: 'rgba(255, 255, 255, 0.75)', textDecoration: 'none', fontSize: '13px' }}>Privacy Policy</Link>
+            <Link href="/admin/login" style={{ color: 'var(--color-tertiary-fixed-dim)', textDecoration: 'none', fontSize: '12px', marginTop: '0.5rem' }}>
+              🔒 Admin Control Center
             </Link>
-            <Link
-              href="/about"
-              className="font-label-caps"
-              style={{ color: 'rgba(255, 255, 255, 0.65)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
-            >
-              Press Kit
-            </Link>
-            <Link
-              href="/about"
-              className="font-label-caps"
-              style={{ color: 'rgba(255, 255, 255, 0.65)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
-            >
-              Privacy Policy
-            </Link>
+          </div>
+        </div>
+
+        {/* Bottom Credits */}
+        <div
+          style={{
+            paddingTop: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            fontSize: '12px',
+            color: 'rgba(255, 255, 255, 0.5)',
+          }}
+        >
+          <div>© {year} Chef Irfan Malik. All culinary rights reserved.</div>
+          <div>
+            Designed &amp; Developed by <strong style={{ color: '#ffffff' }}>A Wajid Shah</strong>
           </div>
         </div>
       </div>
