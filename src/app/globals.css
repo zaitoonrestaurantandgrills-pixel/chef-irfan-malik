@@ -2,7 +2,7 @@
 @import "tailwindcss";
 @import "../styles/design-tokens.css";
 
-/* ── Stitch Design Tokens: Culinary Heritage (Chef Irfan Malik) ── */
+/* ── Stitch Design Tokens: Epicurean Red (Chef Irfan Malik - Chefs Site) ── */
 :root {
   /* Surfaces & Backgrounds (Warm Ivory & Layers) */
   --color-bg:                  #faf9f5;   /* Warm Ivory base canvas */
@@ -17,38 +17,41 @@
 
   /* Typography & Neutrals */
   --color-text:                #1b1c1a;   /* Primary deep charcoal */
-  --color-text-muted:          #444748;   /* Muted charcoal body */
-  --color-text-subtle:         #747878;   /* Subtle label tone */
+  --color-text-muted:          #5d3f3c;   /* Rich warm charcoal body */
+  --color-text-subtle:         #916f6a;   /* Muted label tone */
   --color-inverse-surface:     #2f312e;
   --color-inverse-text:        #f2f1ed;
 
-  /* Brand Accents */
-  --color-primary:             #000000;   /* Charcoal / Solid Black */
-  --color-primary-container:   #1c1b1b;
+  /* Brand Accents (Epicurean Red & Slate & Gold) */
+  --color-primary:             #bb010d;   /* Epicurean Crimson Red */
+  --color-primary-container:   #e02924;   /* Vibrant Action Red */
+  --color-primary-fixed:       #ffdad5;
+  --color-primary-fixed-dim:   #ffb4aa;
   --color-on-primary:          #ffffff;
+  --color-on-primary-container:#fffbff;
   
-  --color-secondary:           #944925;   /* Earthy Terracotta */
-  --color-secondary-container: #fe9e72;
+  --color-secondary:           #605e5b;   /* Refined Slate / Charcoal */
+  --color-secondary-container: #e6e2de;
   --color-on-secondary:        #ffffff;
-  --color-on-secondary-container: #773310;
-  --color-secondary-fixed:     #ffdbcd;
-  --color-secondary-fixed-dim: #ffb596;
+  --color-on-secondary-container: #666461;
+  --color-secondary-fixed:     #e6e2de;
+  --color-secondary-fixed-dim: #cac6c2;
 
-  --color-tertiary:            #000000;
-  --color-tertiary-container:  #261900;
+  --color-tertiary:            #755716;   /* Rich Bronze */
+  --color-tertiary-container:  #90702d;
   --color-tertiary-fixed:      #ffdea5;
-  --color-tertiary-fixed-dim:  #e9c176;   /* Muted Gold */
-  --color-on-tertiary-container: #a17f3b;
+  --color-tertiary-fixed-dim:  #e9c176;   /* Muted Harvest Gold */
+  --color-on-tertiary-container: #fffbff;
 
   /* Borders & Dividers */
-  --color-border:              #c4c7c7;   /* Delicate 1px border */
+  --color-border:              #e3e2df;   /* Crisp neutral border */
   --color-border-subtle:       #efeeea;
-  --color-border-variant:      #e3e2df;
+  --color-border-variant:      #e6bdb8;   /* Warm tinted border */
   --color-border-gold:         #e9c176;
-  --color-border-terracotta:   #944925;
+  --color-border-red:          #bb010d;
 
   /* Semantic Feedback */
-  --color-success:             #2b7a0b;
+  --color-success:             #28a745;
   --color-error:               #ba1a1a;
   --color-error-container:     #ffdad6;
   --color-warning:             #d97706;
