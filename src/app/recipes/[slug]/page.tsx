@@ -703,7 +703,7 @@ export default async function RecipeDetailPage({ params }: PageProps) {
                         >
                           <span style={{ fontSize: '1rem', flexShrink: 0 }}>💡</span>
                           <p className="font-body-md" style={{ color: 'var(--color-text)', margin: 0, lineHeight: 1.65, fontSize: '14px' }}>
-                            {tip.tip}
+                            {tip.content}
                           </p>
                         </div>
                       ))}
