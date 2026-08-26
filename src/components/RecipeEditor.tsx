@@ -184,19 +184,37 @@ export default function RecipeEditor({ initialData, categories, isEditing = fals
 
     const targetStatus = overrideStatus || form.status;
 
-    // Clean up empty rows
+    // Clean and strictly format data
     const cleanedData = {
       ...form,
+      title: form.title.trim(),
+      slug: (form.slug.trim() || generateSlug(form.title)).toLowerCase(),
+      description: form.description?.trim() || '',
+      coverImage: form.coverImage?.trim() || null,
+      cuisine: form.cuisine?.trim() || 'Pakistani',
+      categoryId: form.categoryId && form.categoryId.trim() !== '' ? form.categoryId : null,
       status: targetStatus,
-      prepTime: Number(form.prepTime),
-      cookingTime: Number(form.cookingTime),
-      servings: Number(form.servings),
-      price: form.type === 'FREE' ? 0 : Number(form.price),
-      ingredients: form.ingredients.filter((i) => i.ingredient.trim() !== ''),
-      steps: form.steps.filter((s) => s.instruction.trim() !== ''),
-      notes: form.notes.filter((n) => n.trim() !== ''),
-      tips: form.tips.filter((t) => t.trim() !== ''),
-      equipment: form.equipment.filter((eq) => eq.trim() !== ''),
+      prepTime: Number(form.prepTime) || 0,
+      cookingTime: Number(form.cookingTime) || 0,
+      servings: Math.max(1, Number(form.servings) || 1),
+      price: form.type === 'FREE' ? 0 : Math.max(0, Number(form.price) || 0),
+      ingredients: form.ingredients
+        .filter((i) => i.ingredient && i.ingredient.trim() !== '')
+        .map((i, idx) => ({
+          ingredient: i.ingredient.trim(),
+          quantity: i.quantity?.trim() || '',
+          unit: i.unit?.trim() || '',
+          sortOrder: idx + 1,
+        })),
+      steps: form.steps
+        .filter((s) => s.instruction && s.instruction.trim() !== '')
+        .map((s, idx) => ({
+          stepNumber: idx + 1,
+          instruction: s.instruction.trim(),
+        })),
+      notes: form.notes.filter((n) => n && n.trim() !== ''),
+      tips: form.tips.filter((t) => t && t.trim() !== ''),
+      equipment: form.equipment.filter((eq) => eq && eq.trim() !== ''),
     };
 
     try {

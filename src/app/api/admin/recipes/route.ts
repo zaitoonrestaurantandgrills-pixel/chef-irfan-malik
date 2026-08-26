@@ -4,33 +4,33 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 const recipeSchema = z.object({
-  title: z.string().min(2, 'Title must be at least 2 characters'),
-  slug: z.string().min(2, 'Slug must be at least 2 characters'),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required'),
+  description: z.string().optional().nullable().default(''),
   coverImage: z.string().optional().nullable(),
-  cuisine: z.string().min(2, 'Cuisine is required'),
+  cuisine: z.string().optional().nullable().default('Pakistani'),
   categoryId: z.string().optional().nullable(),
-  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD', 'EXPERT']),
-  prepTime: z.number().int().nonnegative(),
-  cookingTime: z.number().int().nonnegative(),
-  servings: z.number().int().positive(),
-  type: z.enum(['FREE', 'PREMIUM']),
-  price: z.number().nonnegative(),
+  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD', 'EXPERT']).default('MEDIUM'),
+  prepTime: z.coerce.number().nonnegative().default(0),
+  cookingTime: z.coerce.number().nonnegative().default(0),
+  servings: z.coerce.number().positive().default(1),
+  type: z.enum(['FREE', 'PREMIUM']).default('FREE'),
+  price: z.coerce.number().nonnegative().default(0),
   currency: z.string().default('PKR'),
-  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
+  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']).default('DRAFT'),
   featured: z.boolean().default(false),
   ingredients: z.array(
     z.object({
-      ingredient: z.string().min(1),
-      quantity: z.string().min(1),
-      unit: z.string().optional().nullable(),
-      sortOrder: z.number().int().default(0),
+      ingredient: z.string().min(1, 'Ingredient name is required'),
+      quantity: z.string().optional().nullable().default(''),
+      unit: z.string().optional().nullable().default(''),
+      sortOrder: z.coerce.number().int().optional().default(0),
     })
   ).default([]),
   steps: z.array(
     z.object({
-      stepNumber: z.number().int(),
-      instruction: z.string().min(1),
+      stepNumber: z.coerce.number().int().optional().default(1),
+      instruction: z.string().min(1, 'Step instruction is required'),
     })
   ).default([]),
   notes: z.array(z.string()).default([]),
@@ -49,28 +49,33 @@ export async function POST(req: NextRequest) {
     const parsed = recipeSchema.safeParse(body);
 
     if (!parsed.success) {
+      const fieldErrors = parsed.error.flatten().fieldErrors;
+      const errorMsg = Object.entries(fieldErrors)
+        .map(([k, v]) => `${k}: ${(v as string[]).join(', ')}`)
+        .join('; ');
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+        { error: `Validation failed: ${errorMsg}`, details: fieldErrors },
         { status: 400 }
       );
     }
 
     const data = parsed.data;
 
-    // Check slug uniqueness
-    const existing = await prisma.recipe.findUnique({ where: { slug: data.slug } });
+    // Check slug uniqueness (auto-append timestamp if duplicate)
+    let finalSlug = data.slug;
+    const existing = await prisma.recipe.findUnique({ where: { slug: finalSlug } });
     if (existing) {
-      return NextResponse.json({ error: 'A recipe with this slug already exists' }, { status: 409 });
+      finalSlug = `${data.slug}-${Date.now().toString().slice(-4)}`;
     }
 
     const recipe = await prisma.recipe.create({
       data: {
         title: data.title,
-        slug: data.slug,
-        description: data.description,
+        slug: finalSlug,
+        description: data.description || '',
         coverImage: data.coverImage || null,
-        cuisine: data.cuisine,
-        categoryId: data.categoryId || null,
+        cuisine: data.cuisine || 'Pakistani',
+        categoryId: data.categoryId && data.categoryId.trim() !== '' ? data.categoryId : null,
         difficulty: data.difficulty,
         prepTime: data.prepTime,
         cookingTime: data.cookingTime,
@@ -83,7 +88,7 @@ export async function POST(req: NextRequest) {
         ingredients: {
           create: data.ingredients.map((ing, i) => ({
             ingredient: ing.ingredient,
-            quantity: ing.quantity,
+            quantity: ing.quantity || '',
             unit: ing.unit || null,
             sortOrder: ing.sortOrder || i + 1,
           })),
@@ -95,13 +100,13 @@ export async function POST(req: NextRequest) {
           })),
         },
         notes: {
-          create: data.notes.map((content) => ({ content })),
+          create: data.notes.filter((n) => n && n.trim() !== '').map((content) => ({ content })),
         },
         tips: {
-          create: data.tips.map((content) => ({ content })),
+          create: data.tips.filter((t) => t && t.trim() !== '').map((content) => ({ content })),
         },
         equipment: {
-          create: data.equipment.map((name) => ({ name })),
+          create: data.equipment.filter((eq) => eq && eq.trim() !== '').map((name) => ({ name })),
         },
       },
     });
