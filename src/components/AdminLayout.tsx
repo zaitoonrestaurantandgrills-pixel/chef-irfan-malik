@@ -8,7 +8,8 @@ import {
   LayoutDashboard, BookOpen, PlusCircle, ShoppingBag,
   Users, Image as ImageIcon, Trophy, MessageSquare, BarChart3,
   Settings, LogOut, Globe, Menu, X, Bell, Search, Tag,
-  Home as HomeIcon, Sparkles, ChevronRight, Layers, ShieldCheck
+  Home as HomeIcon, Sparkles, ChevronRight, Layers, ShieldCheck,
+  KeyRound, UserCog
 } from 'lucide-react';
 
 interface NavGroup {
@@ -18,6 +19,7 @@ interface NavGroup {
     label: string;
     icon: any;
     badge?: string;
+    superAdminOnly?: boolean;
   }[];
 }
 
@@ -54,8 +56,10 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    title: 'Platform Control',
+    title: 'Security & Platform',
     items: [
+      { href: '/admin/users', label: 'Admin Users', icon: UserCog, superAdminOnly: true },
+      { href: '/admin/settings/security', label: 'Security & Password', icon: KeyRound },
       { href: '/admin/settings', label: 'Website Settings', icon: Settings },
     ],
   },
@@ -65,6 +69,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isSuperAdmin = session?.user?.role === 'SUPER_ADMIN';
 
   // Close drawer on path change
   useEffect(() => {
@@ -133,7 +139,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         >
           <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/logo.png" alt="Chef Irfan Malik Emblem" style={{ height: '42px', width: 'auto', objectFit: 'contain' }} />
+            <img src="/images/logo.png" alt="Chef Irfan Malik Logo" style={{ height: '42px', width: 'auto', objectFit: 'contain' }} />
             <div>
               <div
                 style={{
@@ -194,83 +200,92 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             gap: '1.25rem',
           }}
         >
-          {navGroups.map((group) => (
-            <div key={group.title}>
-              <div
-                className="font-label-caps"
-                style={{
-                  color: 'var(--color-text-subtle)',
-                  fontSize: '9.5px',
-                  letterSpacing: '0.14em',
-                  padding: '0 0.75rem',
-                  marginBottom: '0.35rem',
-                  fontWeight: 700,
-                }}
-              >
-                {group.title}
+          {navGroups.map((group) => {
+            // Filter out superAdminOnly items if not super admin
+            const visibleItems = group.items.filter(
+              (item) => !item.superAdminOnly || isSuperAdmin
+            );
+
+            if (visibleItems.length === 0) return null;
+
+            return (
+              <div key={group.title}>
+                <div
+                  className="font-label-caps"
+                  style={{
+                    color: 'var(--color-text-subtle)',
+                    fontSize: '9.5px',
+                    letterSpacing: '0.14em',
+                    padding: '0 0.75rem',
+                    marginBottom: '0.35rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  {group.title}
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                  {visibleItems.map((item) => {
+                    const isActive =
+                      item.href === '/admin'
+                        ? pathname === '/admin'
+                        : pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/admin/settings');
+                    const Icon = item.icon;
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="font-label-caps"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '0.65rem',
+                          padding: '0.65rem 0.75rem',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '11px',
+                          fontWeight: isActive ? 700 : 500,
+                          textDecoration: 'none',
+                          color: isActive ? 'var(--color-on-secondary-container)' : 'var(--color-text-muted)',
+                          background: isActive ? 'var(--color-secondary-container)' : 'transparent',
+                          borderLeft: isActive ? '3px solid var(--color-secondary)' : '3px solid transparent',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isActive) e.currentTarget.style.backgroundColor = 'var(--color-surface-low)';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <Icon size={16} color={isActive ? 'var(--color-secondary)' : 'var(--color-text-muted)'} />
+                          <span>{item.label}</span>
+                        </div>
+
+                        {item.badge && (
+                          <span
+                            style={{
+                              background: item.badge === 'Hot' ? 'var(--color-secondary)' : 'var(--color-tertiary-container)',
+                              color: item.badge === 'Hot' ? '#ffffff' : 'var(--color-tertiary-fixed-dim)',
+                              fontSize: '8.5px',
+                              padding: '0.1rem 0.4rem',
+                              borderRadius: 'var(--radius-full)',
+                              fontWeight: 700,
+                              letterSpacing: '0.04em',
+                            }}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                {group.items.map((item) => {
-                  const isActive =
-                    item.href === '/admin'
-                      ? pathname === '/admin'
-                      : pathname === item.href || pathname.startsWith(item.href + '/');
-                  const Icon = item.icon;
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="font-label-caps"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '0.65rem',
-                        padding: '0.65rem 0.75rem',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '11px',
-                        fontWeight: isActive ? 700 : 500,
-                        textDecoration: 'none',
-                        color: isActive ? 'var(--color-on-secondary-container)' : 'var(--color-text-muted)',
-                        background: isActive ? 'var(--color-secondary-container)' : 'transparent',
-                        borderLeft: isActive ? '3px solid var(--color-secondary)' : '3px solid transparent',
-                        transition: 'all 0.15s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!isActive) e.currentTarget.style.backgroundColor = 'var(--color-surface-low)';
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <Icon size={16} color={isActive ? 'var(--color-secondary)' : 'var(--color-text-muted)'} />
-                        <span>{item.label}</span>
-                      </div>
-
-                      {item.badge && (
-                        <span
-                          style={{
-                            background: item.badge === 'Hot' ? 'var(--color-secondary)' : 'var(--color-tertiary-container)',
-                            color: item.badge === 'Hot' ? '#ffffff' : 'var(--color-tertiary-fixed-dim)',
-                            fontSize: '8.5px',
-                            padding: '0.1rem 0.4rem',
-                            borderRadius: 'var(--radius-full)',
-                            fontWeight: 700,
-                            letterSpacing: '0.04em',
-                          }}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Sidebar Profile & Footer */}
@@ -306,8 +321,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-primary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                 {session?.user?.name || 'Chef Irfan Malik'}
               </div>
-              <div className="font-label-caps" style={{ fontSize: '8.5px', color: 'var(--color-secondary)' }}>
-                Master Admin
+              <div className="font-label-caps" style={{ fontSize: '8.5px', color: 'var(--color-secondary)', fontWeight: 700 }}>
+                {session?.user?.role || 'ADMIN'}
               </div>
             </div>
           </div>
@@ -336,7 +351,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
 
             <button
-              onClick={() => signOut({ callbackUrl: '/login' })}
+              onClick={() => signOut({ callbackUrl: '/admin/login' })}
               className="font-label-caps"
               style={{
                 display: 'flex',
@@ -419,6 +434,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+            <Link
+              href="/admin/settings/security"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--color-text-muted)',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textDecoration: 'none',
+              }}
+              title="Security & Password"
+            >
+              <KeyRound size={15} />
+            </Link>
+
             <Link
               href="/"
               target="_blank"
